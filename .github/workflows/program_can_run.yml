@@ -1,0 +1,24 @@
+name: Program can run
+
+# a test that the program can compile, run and terminate
+
+on:
+  pull_request:
+    paths:
+      - 'code/**'
+
+jobs:
+  can_run:
+    runs-on: ubuntu-latest
+
+    steps:
+    # SETUP
+    - uses: actions/checkout@v2
+    # Remove bin folder and make new one
+    - name: compile main.c
+      run: |
+        gcc code/main.c -o bin/a.exe
+
+    - name: run main.c
+      run: |
+        bin/a.exe
