@@ -1,0 +1,41 @@
+name: Web Confidence
+
+# Box confidence continious integration testing
+# Confidence testing are for getting quick feedback through unittests and quick integration tests
+
+on:
+  pull_request:
+    paths:
+      - 'web/**'
+
+env:
+  MIN_COVERAGE: 75
+
+jobs:
+  web_confidence:
+    runs-on: ubuntu-latest
+
+    steps:
+    # SETUP
+    - uses: actions/checkout@v2
+
+    - name: Startup web container
+      run: |
+        docker-compose up -d --build web
+
+    # TESTING
+
+    - name: Check for linting before running tests
+      uses: py-actions/flake8@v2
+      with:
+          path: "web"
+          max-line-length: 9000
+
+    - name: Run Tests
+      working-directory: ./web
+      run: |
+        docker-compose exec -T web pytest --cov=. --cov-fail-under=$MIN_COVERAGE
+
+    - name: Tear down web container
+      run: |
+        docker-compose down -v
