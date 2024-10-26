@@ -12,9 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # SETUP
     - uses: actions/checkout@v2
-    # Remove bin folder and make new one
+
+    - name: remove binary (bin) folder
+      run: |
+        rm -rf bin
+
+    - name: add binary (bin) folder
+      run: |
+        mkdir bin
+
     - name: compile main.c
       run: |
         gcc code/main.c -o bin/a.exe
