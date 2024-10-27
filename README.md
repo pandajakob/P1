@@ -1,7 +1,14 @@
 # P1
 
-## Sådan bruger du github:
+## Forklaring af filerne 
+- README.MD er den fil du læser nu. Giver mulighed for at give en beskrivelse af projektet som kan læses her.
+- src mappen er der alt vores kode ligger.
+-  .gitignore fortæller github hvilke filer der skal ignoreres når du pusher. Ikke vigtig for nu
+- .github er en skjult mappe som kan bruges til at opsætte test af kode og andre ting. Ikke vigtig for nu
 
+**husk ALDRIG at lave ændringer i filer inde på github!!**
+
+## Sådan bruger du github:
 
 ### Første gang
 1. Gå til den mappe hvor du gerne vil have filerne ligger med 'cd'
