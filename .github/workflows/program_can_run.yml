@@ -4,8 +4,6 @@ name: Program can run
 
 on:
   pull_request:
-    paths:
-      - 'src/**'
 
 jobs:
   can_run:
