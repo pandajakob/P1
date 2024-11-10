@@ -11,14 +11,15 @@ typedef struct {
 } Job;
 
 int read_csv(Job jobs[]);
+void printJobs(Job jobs[], int n);
 
 int main() {
 
-    Job jobs[14];
+    Job jobs[13];
 
     read_csv(jobs);
+    printJobs(jobs, 13);
 
-    printf("Hello World");
     return 0;
 }
 
@@ -57,11 +58,13 @@ int read_csv(Job jobs[]) {
 
     fclose(fp);
 
-    printf("\n records: %d", records);
-    printf("\n array: %d", records);
-
-    for (int i = 0; i < records; i++) 
-        printf("\n%s %s Løn: %.2lf tid fra aau: %.2lf, distance: %lf", jobs[i].title, jobs[i].adress, jobs[i].salary, jobs[i].timeFromAAU, jobs[i].distanceFromAAU);
-
     return 0;
+}
+
+void printJobs(Job jobs[],int n) {
+    printf("\n records: %d", n);
+    printf("\n array: %d", n);
+
+    for (int i = 0; i < n; i++) 
+        printf("\n%s %s Løn: %.2lf tid fra aau: %.2lf, distance: %lf", jobs[i].title, jobs[i].adress, jobs[i].salary, jobs[i].timeFromAAU, jobs[i].distanceFromAAU);
 }

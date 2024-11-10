@@ -1,13 +1,13 @@
-Rengørings assistent,"Falkoner allé 63 2000",300,25
-Lukkeansvarlig Netto,"Kirke Værløsevej 8",144,35
-Kundeservice,"Mosedalsvej i Valby",180,15
-Softwareudvikler,"Bryghusgade 10 1473 København",130,40
-Mekaniker,Rødovre,174,30
-Software Developer,Malmparken,160,20
-Lagerarbejder,"Kanalholmen 25 2650 Hvidovre",212.75,45
-Concierge på hotel,Kalvebod brygge 10,160,18
-Event bartender,"Det skifter alt efter eventet",200,10
-Svømmetræner,"Gladsaxe sportshal",176,50
-MusicProducer,Internettet,40,0
-Studentermedhjælper hos Another Closet,Guldbergsgade,145,15
-(UX) Research Assistant,"Amagerfælledvej 106",170,20
+Rengørings assistent,"Falkoner allé 63 2000",300,25,2
+Lukkeansvarlig Netto,"Kirke Værløsevej 8",144,35,3
+Kundeservice,"Mosedalsvej i Valby",180,15,2
+Softwareudvikler,"Bryghusgade 10 1473 København",130,40,5
+Mekaniker,Rødovre,174,30,3
+Software Developer,Malmparken,160,20,2
+Lagerarbejder,"Kanalholmen 25 2650 Hvidovre",212.75,45,3
+Concierge på hotel,Kalvebod brygge 10,160,18,10
+Event bartender,"Det skifter alt efter eventet",200,10,10
+Svømmetræner,"Gladsaxe sportshal",176,50,2
+MusicProducer,Internettet,40,0,3
+Studentermedhjælper hos Another Closet,Guldbergsgade,145,15,4
+(UX) Research Assistant,"Amagerfælledvej 106",170,20,1
