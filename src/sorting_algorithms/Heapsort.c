@@ -90,40 +90,70 @@ int replace(int v) {
 
 
 // Sorts the array using the heap sort algorithm
+
+// Moves an index up the heap to maintain min-heap property
+void upheap(int k) {
+    int v = a[k];
+    a[0] = INT_MAX; // Set a[0] to INT_MAX to simplify comparison
+
+    // Move up while parent is less than current value
+    while(a[k/2] <= v) {
+        a[k] = a[k/2];
+        k = k / 2;
+    }
+
+    a[k] = v; // Place the value at the correct position
+}
+    
+// Inserts a new item and restores heap property
+void insert(int v) {
+    a[++N] = v; // Add element at the end
+    upheap(N);   // Restore heap by moving up
+}
+
+// Moves an index down the heap to restore heap property
+void downheap(int a[], int N, int k) {
+    int j, v = a[k];
+
+    // Move down the heap until heap property is restored
+    while (k <= N / 2) {
+        j = 2 * k; // Left child index
+        if (j < N && a[j] < a[j + 1]) j++; // Select the larger child
+        if (v >= a[j]) break; // If the current value is larger than both children, stop
+        a[k] = a[j]; // Move child up
+        k = j; // Continue with the selected child
+    }
+
+    a[k] = v; // Place the value at the correct position
+}
+
+// Removes and returns the maximum (root) value and restores heap property
+int remove_max() {
+    int v = a[1];
+    a[1] = a[N--]; // Swap root with last element and reduce heap size
+    downheap(a, N, 1); // Restore heap property starting from the root
+    return v;
+}
+
+// Replaces root with a new value and restores heap property
+int replace(int v) {
+    a[0] = v; // Replace root with new value
+    downheap(a, N, 1); // Restore heap property
+    return a[0]; // Return replaced value
+}
+
+// Sorts the array using heap sort algorithm
+
 void heapsort(int a[], int N) {
     int k, t;
 
     // Build the heap from non-leaf nodes down to the root
-    // This ensures the heap property is maintained for the entire array
+
+
     for (k = N / 2; k >= 1; k--) downheap(a, N, k);
 
     // Repeatedly extract the max (root) and restore heap property
     while (N > 1) {
-        t = a[1];            // Store the current root value (maximum value)
-        a[1] = a[N];         // Swap root with the last element
-        a[N] = t;            // Place the original root value at the end
-        downheap(a, --N, 1); // Restore the heap property after the swap
-    }
-}
-
-
-// Constructs a priority queue (max-heap) from an unordered array
-void pqconstruct(int a[], int N) {
-    int k;
-
-    // Initialize p[] and q[] to the original indices
-    // p[] and q[] store the indices of the elements in the priority queue
-    for (k = 1; k <= N; k++) {
-        p[k] = k;  // p[k] stores the index of element k in the array
-        q[k] = k;  // q[k] also stores the same index, for possible other uses
-    }
-
-    // Build the heap using pqdownheap
-    // We start from the last non-leaf node and move up to the root
-    for (k = N / 2; k >= 1; k--) {
-        pqdownheap(a, N, k);  // Ensure the max-heap property by calling pqdownheap
-    }
-}
 
 
 // Priority queue-specific downheap to maintain the heap with p[] and q[] arrays
