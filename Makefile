@@ -3,10 +3,9 @@
 
 #Tjekker for om det er windows eller macOS 
 
-ifeq ($(OS),Windows_NT) 
-	TARGET = ./bin/a.exe else TARGET = ./bin/a.out 
-endif 
-	SRC = ./src/main.c
+TARGET = ./bin/a.out 
+
+SRC = ./src/main.c
 	
 #genererer a.out/a.exe fil og putter den i 'bin' 
 

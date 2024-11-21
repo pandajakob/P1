@@ -1,3 +1,4 @@
+title, address, salary, timeFromAAU, distanceFromAAU
 Rengørings assistent,"Falkoner allé 63 2000",300,25,2
 Lukkeansvarlig Netto,"Kirke Værløsevej 8",144,35,3
 Kundeservice,"Mosedalsvej i Valby",180,15,2
