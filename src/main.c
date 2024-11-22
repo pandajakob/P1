@@ -5,10 +5,13 @@
 typedef struct Job {
     int Id;
     char title[100];
-    double salary; // kr/time
     char adress[100]; 
-    double timeFromAAU; // min
+    double salary; // kr/time
     double distanceFromAAU; // km
+    double timeWalk;
+    double timeBike;
+    double timePublic;
+    double timeCar;
 } Job;
 
 Job *readJobs(int *n);
@@ -37,7 +40,7 @@ Job *readJobs(int *n) {
         exit(EXIT_FAILURE);
     }
     
-    fp = fopen("./src/fakeSurveyData.txt", "r"); 
+    fp = fopen("./src/survey.txt", "r"); 
 
     if (fp == NULL) {
         printf("Error opening file\n");
@@ -50,24 +53,24 @@ Job *readJobs(int *n) {
 
     do {
         //fscanf scans a row in survey.txt, into a given target. Our target is the jobs structure
-        read = fscanf(fp, "%99[^,],%99[^,],%lf,%lf,%lf\n", 
+        read = fscanf(fp, "%99[^,],%99[^,],%lf,%lf,%lf,%lf,%lf,%lf\n", 
                     jobs[records].title, jobs[records].adress,
-                    &jobs[records].salary, &jobs[records].timeFromAAU, 
-                    &jobs[records].distanceFromAAU);
-        
+                    &jobs[records].salary, &jobs[records].distanceFromAAU,
+                    &jobs[records].timeWalk, &jobs[records].timeBike, 
+                    &jobs[records].timePublic, &jobs[records].timeCar);
+                    
         jobs[records].Id = records;
 
-        if (read == 5) { 
+        if (read == 8) { 
             records++; 
             (*n)++;
         }
         
-        if (read != 5 && !feof(fp)) {
+        if (read != 8 && !feof(fp)) {
             printf("Error: file format incorrect\n");
             exit(EXIT_FAILURE);
         }
-        printf("n: %d\n", *n);
-        printf("capacity: %d\n", capacity);
+
         // if we run out of capacity, it will give jobs 10 more space.
         if (*n >= capacity) {
             capacity *= 2;
@@ -94,7 +97,5 @@ void printJobs(Job jobs[],int n) {
     printf("\n array: %d", n);
 
     for (int i = 0; i < n; i++) 
-        printf("\n Id: %d, %s %s Løn: %.1lf tid fra aau: %.1lf, distance: %.1lf\n", jobs[i].Id, jobs[i].title, jobs[i].adress, jobs[i].salary, jobs[i].timeFromAAU, jobs[i].distanceFromAAU);
-
-
+        printf("\n Id: %d, %s %s Løn: %.1lf distance: %.1lf km, Gå: %.1lfmin, Cykel: %.1lfmin, tog/bus: %.1lfmin, bil: %.1lfmin \n", jobs[i].Id, jobs[i].title, jobs[i].adress, jobs[i].salary, jobs[i].distanceFromAAU, jobs[i].timeWalk, jobs[i].timeBike, jobs[i].timePublic, jobs[i].timeCar);
 }
