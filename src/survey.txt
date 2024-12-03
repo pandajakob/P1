@@ -1,21 +1,37 @@
-title,adress,salary,distanceFromAAU,timeWalk,timeBike,timePublic,timeCar
-Barista,"Vesterbrogade 42",145.0,7.5,90,30,25,15
-Kassemedarbejder,"Rødovre Centrum",150.0,15.0,180,45,35,20
-Studentermedhjælper i IT,"Amager Strandvej 100",175.0,6.0,75,25,20,10
-Callcenter Operatør,"Sydhavnsgade 15",130.0,10.0,120,35,30,15
-Servicemedarbejder,"Frederiksberg Allé 58",155.0,8.5,105,30,25,12
-Biblioteksassistent,"Lyngby Bibliotek",140.0,14.0,170,50,40,25
-Serveringspersonale,"Tivoli Hovedindgang",160.0,7.0,85,28,20,10
-Butiksmedarbejder,"Nørrebrogade 74",145.0,6.5,80,25,18,10
-Eventmedarbejder,"København Zoo",170.0,9.0,110,35,30,15
-Fitnessinstruktør,"Glostrup Sportshal",185.0,18.0,210,60,45,30
-Lektiehjælper,"Adresse varierer",200.0,0.0,0,0,0,0
-Studieambassadør,"AAU Campus",120.0,0.5,10,5,5,2
-Receptionist,"Hvidovrevej 90",160.0,11.0,140,40,30,15
-Barassistent,"Halmtorvet 29",150.0,7.8,100,30,25,12
-Lagerassistent,"Kanalvej 10",145.0,15.5,190,55,40,25
-Kundeservice,"Amager Centeret",175.0,5.5,70,22,18,8
-Skolesekretær,"Gladsaxe Skole",155.0,12.0,150,45,35,20
-Social Media Assistent,"Ørestads Boulevard 35",165.0,4.0,50,15,12,6
-Chauffør for madlevering,"Adresse varierer",180.0,0.0,0,0,0,0
-Promoter,"Frederiksborggade 10",200.0,7.0,85,25,20,10
+title,adress,salary,distanceFromAAU,workingHours,timeWalk,timeBike,timePublic,timeCar
+Barista,"Vesterbrogade 42",145.0,7.5,15,90,30,25,15
+Kassemedarbejder,"Rødovre Centrum",150.0,15.0,20,180,45,35,20
+Studentermedhjælper i IT,"Amager Strandvej 100",175.0,6.0,15,75,25,20,10
+Callcenter Operatør,"Sydhavnsgade 15",130.0,10.0,17.5,120,35,30,15
+Servicemedarbejder,"Frederiksberg Allé 58",155.0,8.5,15,105,30,25,12
+Biblioteksassistent,"Lyngby Bibliotek",140.0,14.0,20,170,50,40,25
+Serveringspersonale,"Tivoli Hovedindgang",160.0,7.0,15,85,28,20,10
+Butiksmedarbejder,"Nørrebrogade 74",145.0,6.5,15,80,25,18,10
+Eventmedarbejder,"København Zoo",170.0,9.0,17.5,110,35,30,15
+Fitnessinstruktør,"Glostrup Sportshal",185.0,18.0,25,210,60,45,30
+Receptionist,"Hvidovrevej 90",160.0,11.0,17.5,140,40,30,15
+Barassistent,"Halmtorvet 29",150.0,7.8,15,100,30,25,12
+Lagerassistent,"Kanalvej 10",145.0,15.5,20,190,55,40,25
+Kundeservice,"Amager Centeret",175.0,5.5,12.5,70,22,18,8
+Skolesekretær,"Gladsaxe Skole",155.0,12.0,20,150,45,35,20
+Social Media Assistent,"Ørestads Boulevard 35",165.0,4.0,10,50,15,12,6
+Promoter,"Frederiksborggade 10",200.0,7.0,15,85,25,20,10
+Lagermedarbejder,"Hellerupvej 21",150.0,10.5,17.5,130,40,30,18
+Barnepige,"Amagerbrogade 89",140.0,6.2,15,70,20,18,9
+Køkkenmedhjælper,"Nørreport Station",145.0,7.3,15,85,25,20,10
+Postsorterer,"Østerbrogade 112",155.0,9.0,17.5,110,35,28,14
+Teknisk Support,"Ringstedvej 3",165.0,12.8,20,145,45,35,22
+Butiksassistent,"Vesterbro Torv 5",145.0,8.0,15,95,28,22,12
+Kioskmedarbejder,"Langelinie Allé 17",135.0,9.5,17.5,115,35,28,15
+Cafémedarbejder,"Godthåbsvej 88",150.0,8.7,15,100,30,25,13
+Salgskonsulent,"Islands Brygge 30",175.0,5.3,12.5,60,20,18,7
+Serveringspersonale,"Grønnegade 10",160.0,6.8,15,85,25,20,10
+Fitnesscenter Rengøring,"Købmagergade 37",145.0,7.5,15,90,30,25,15
+Skoassistent,"Fields Shoppingcenter",150.0,6.0,15,75,22,18,9
+Museumsmedhjælper,"Statens Museum for Kunst",160.0,8.5,15,105,30,25,12
+Pladsmand,"Bispebjerg Station",145.0,10.5,17.5,130,40,30,18
+Byggemarked Assistent,"Frederikssundsvej 150",150.0,13.0,20,160,45,35,20
+Cykelbud,"Nørrebro Station",155.0,6.7,15,85,25,20,10
+Receptionist,"Bredgade 42",160.0,7.9,17.5,95,28,22,12
+Rengøringsassistent,"Roskildevej 200",145.0,11.5,20,140,40,30,18
+Tøjbutiksmedarbejder,"Strøget 38",150.0,8.3,15,100,30,25,13
