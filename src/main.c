@@ -23,6 +23,7 @@ typedef struct Job {
 Job *readJobs(int *n);
 void printJobs(Job jobs[], int n);
 Job *filterJobs(int *n, Job *jobs, int minSalary, int timeOnStudies, int maxWorkload, int *k);
+
 void Merge(Job L[], int start, int end, int mid, int (*compare)(const Job*, const Job*));
 void MergeSort(Job L[], int start, int end, int (*compare)(const Job*, const Job*));
 int compareByTTRBike(const Job* a, const Job* b);
@@ -39,6 +40,7 @@ void printCar(Job *jobsFiltered, int *k);
 int main() {
     int n = 0;
     int k = 0;
+
     int minSalary = 0;
     int homeToAAU = 0;
     int timeOnStudies = 0;
@@ -180,12 +182,14 @@ Job *filterJobs(int *n, Job *jobs, int minSalary, int timeOnStudies, int maxWork
             (*k)++;
         }
     }
+
     //printf("Filtered jobs (%d):\n", *k);
     /*
     for (int i = 0; i < *k; i++) {
         printf("Job %s: Salary = %.0lf Hours = %.0lf\n", jobsFiltered[i].title, jobsFiltered[i].salary, jobsFiltered[i].workingHours);
     }
     */
+
     return jobsFiltered; // Return the filtered jobs
 }
 
@@ -262,6 +266,7 @@ void printJobs(Job jobs[],int n) {
 
     for (int i = 0; i < n; i++) 
         printf("\n Id: %d, %s %s Løn: %.1lf distance: %.1lf km, Gå: %.1lfmin, Cykel: %.1lfmin, tog/bus: %.1lfmin, bil: %.1lfmin \n", jobs[i].Id, jobs[i].title, jobs[i].adress, jobs[i].salary, jobs[i].distanceFromAAU, jobs[i].timeWalk, jobs[i].timeBike, jobs[i].timePublic, jobs[i].timeCar);
+
 } */
 
 void Merge(Job jobsFiltered[], int start, int end, int mid, int (*compare)(const Job*, const Job*)){
@@ -359,3 +364,4 @@ void calcTTR(Job *jobsFiltered, int *k) {
         jobsFiltered[i].ttrCar = tempCarTime / (tempCarTime + tempWorkTime);
     }
 } 
+
