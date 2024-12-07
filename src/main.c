@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+/*
+
+    mkdir -p ./bin 
+    gcc ./src/main.c -o ./bin
+    ./bin/a.exe
+*/
 typedef struct Job {
     int Id;
     char title[100];
