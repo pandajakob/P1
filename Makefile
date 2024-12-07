@@ -6,7 +6,9 @@
 TARGET = ./bin/a.out 
 
 SRC = ./src/main.c
-	
+mkdir -p ./bin 
+gcc main.c -o ./bin
+./bin/a.out
 #genererer a.out/a.exe fil og putter den i 'bin' 
 
 $(TARGET): $(SRC) 
