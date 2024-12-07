@@ -1,23 +1,28 @@
-#Makefile 
-# skriv 'make run' i terminalen for at køre programmet 
+# Makefile
+# Skriv 'make run' i terminalen for at køre programmet
 
-#Tjekker for om det er windows eller macOS 
+# Tjekker for om det er Windows eller macOS
+ifeq ($(OS),Windows_NT)
+    RM = del /Q /F
+    MKDIR = if not exist bin mkdir bin
+    TARGET = bin\a.exe
+else
+    RM = rm -rf
+    MKDIR = mkdir -p bin
+    TARGET = bin/a.out
+endif
 
-TARGET = ./bin/a.out 
+SRC = src/main.c
 
-SRC = ./src/main.c
-	
-#genererer a.out/a.exe fil og putter den i 'bin' 
+# Genererer a.out/a.exe fil og putter den i 'bin'
+$(TARGET): $(SRC)
+	$(MKDIR)
+	gcc $(SRC) -o $(TARGET)
 
-$(TARGET): $(SRC) 
-	mkdir -p ./bin 
-	gcc $(SRC) -o $(TARGET) 
+# 'make run' kører programmet
+run: $(TARGET)
+	$(TARGET)
 
-#'make run' kører programmet 
-
-run: 
-	$(TARGET) $(TARGET) 
-	
-#'make clean' giver mulighed for at slette bin 
-clean: 
-	rm -rf ./bin
+# 'make clean' giver mulighed for at slette bin
+clean:
+	$(RM) bin
