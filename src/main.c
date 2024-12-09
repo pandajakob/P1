@@ -20,15 +20,12 @@ typedef struct Job {
 typedef enum CommuteMode {WALK, BIKE, PUBLIC_TRANSPORT, CAR} CommuteMode;
 typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteModeCategory;
 
-
 Job *readJobs(int *n);
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int desiredJobHoursPerWeek, int studyHoursPerWeek);
 void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode);
 void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode);
 double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
-
-//-----------------------------------------------------------------------------------------
 
 int main() {
     int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, 
@@ -195,8 +192,11 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
     int i = 0, j = 0, k = 0;
 
     // Definerer arrays L1 og L2 med korrekt størrelse (halvering af L)
-    int lengthL1 = mid - start + 1, lengthL2 = end - mid;
-    Job L1[lengthL1], L2[lengthL2];
+    int lengthL1 = mid - start + 1;
+    int lengthL2 = end - mid;
+    Job L1[lengthL1];
+    Job L2[lengthL2];
+    double TTR1, TTR2;
 
     // Fordeler første halvdel af L til L1
     for(i = 0; i < lengthL1; i++){
@@ -213,7 +213,9 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
     while(i < lengthL1 && j < lengthL2){
         /* Hvis L1 har det mindste tal (eller L1 og L2 har samme tal) i sammenligningen, 
         så tilføjes L1's element til L */
-        if (getTTR(L1[i],commuteMode) <= getTTR(L2[j], commuteMode)){
+        TTR1 = getTTR(L1[i], commuteMode);
+        TTR2 = getTTR(L2[i], commuteMode);
+        if (TTR1 <= getTTR(L2[j], commuteMode)){
             jobsFilteredArray[start + i + j] = L1[i];
             i++;
         }
@@ -245,21 +247,26 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
 }
 
 //calculates the TTR for the student based on the given job
-double getTTR(Job job, CommuteMode commuteMode) {
-    /*
-        tempWorkTime = jobsFilteredArray[i].workingHoursPerWeek * 60;
-        tempWalkTime = jobsFilteredArray[i].travelTimeByWalkInMinutes * 2;
-        tempBikeTime = jobsFilteredArray[i].travelTimeByBikeInMinutes * 2;
-        tempPublicTime = jobsFilteredArray[i].travelTimeByPublicInMinutes * 2;
-        tempCarTime = jobsFilteredArray[i].travelTimeByCarInMinutes * 2;
 
-        jobsFilteredArray[i].ttrWalk = tempWalkTime / (tempWalkTime + tempWorkTime);
-        jobsFilteredArray[i].ttrBike = tempBikeTime / (tempBikeTime + tempWorkTime);
-        jobsFilteredArray[i].ttrPublic = tempPublicTime / (tempPublicTime + tempWorkTime);
-        jobsFilteredArray[i].ttrCar = tempCarTime / (tempCarTime + tempWorkTime);
-    */
-   return 1.01;
+
+double getTTR(Job job, CommuteMode commuteMode) {
+    double TTR = 0;
+    double workloadInMinutes = (job.workingHoursPerWeek)*60;
+    
+    switch (commuteMode) {
+        case WALK: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
+        case BIKE: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
+        case PUBLIC_TRANSPORT: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
+        case CAR: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
+        default: break;
+    }
+
+    printf("TTR for job: %lf\n", TTR);
+
+   return TTR;
 }
+
+
 
 //prints the sorted jobs
 void printJobs(Job *jobsArray, int numberOfJobs) {
@@ -271,14 +278,17 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
     else 
         count = numberOfJobs;
 
+    printf("Titel                           Adresse                              Timeloen                 afstand            arbejdstimer              gå              cykle               offentligt            bil\n");
     for (i = 0; i < count; i++) {
-        printf("%-30s %-30s %-15.1lf %-15.1lf %-15.1lf %-15.1lf %-15.5lf \n",
+        printf("%-30s %-30s %15.1lf/time %15.1lfkm %15.1lf timer/uge %15.1lfmin %15.1lfmin %15.1lfmin %15.1lfmin \n",
         jobsArray[i].title, 
         jobsArray[i].adress, 
         jobsArray[i].salary, 
         jobsArray[i].distanceFromAAUInKM, 
-        jobsArray[i].workingHoursPerWeek, 
+        jobsArray[i].workingHoursPerWeek,
         jobsArray[i].travelTimeByWalkInMinutes,
+        jobsArray[i].travelTimeByBikeInMinutes,
+        jobsArray[i].travelTimeByPublicInMinutes,
         jobsArray[i].travelTimeByCarInMinutes);
     }
 }
