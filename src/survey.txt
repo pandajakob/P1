@@ -65,4 +65,113 @@ Rådgiver, Amagerfælledvej 10 ,175.0,6.5,15,80,25,20,10
 Lagermedarbejder, Vigerslev Allé 11 ,145.0,8.7,25,115,35,28,15
 Callcenter Medarbejder, Hillerødgade 72 ,155.0,9.5,17.5,120,40,30,18
 Bogholderassistent, Prags Boulevard 56 ,180.0,5.2,10,60,22,15,9
-falsk job, falsk adresse, 2000.0,5.2,10,60,22,15,9
+Dataanalytiker, Borups Allé 80,185.0,6.0,15,70,22,18,9
+Pizzabud, Vesterbrogade 15,150.0,8.5,12.5,105,30,25,13
+Sygeplejeassistent, Strandboulevarden 90,160.0,7.0,17.5,90,30,20,10
+Filmprojektør, Falkoner Allé 18,165.0,9.2,15,110,35,25,14
+Butikschef, Rødovrevej 12,190.0,12.0,20,145,40,30,18
+Fotograf, Amagerbrogade 40,175.0,5.5,10,70,22,15,8
+Eventkoordinator, Gammel Kongevej 125,170.0,7.0,15,85,25,20,10
+Dyrepasser, Valby Langgade 210,140.0,10.5,20,130,40,30,18
+Kok, Frederiksberg Allé 112,200.0,6.8,10,75,22,15,8
+Biblioteksmedhjælper, Hellerupvej 100,145.0,9.0,12.5,115,35,28,15
+Softwaretester, Vesterbro Torv 9,190.0,5.5,10,60,18,12,8
+Blomsterbinder, Øster Voldgade 18,155.0,8.5,15,105,30,25,12
+Journalistpraktikant, Strandvejen 150,170.0,6.0,12.5,75,25,20,10
+Parkmedarbejder, Søndermarken 3,145.0,10.0,20,120,40,30,18
+Kulturformidler, Kongens Nytorv 10,165.0,7.5,10,85,25,18,9
+Videoredigerer, Islands Brygge 50,185.0,5.8,12.5,65,20,15,7
+Receptionist, Nørregade 22,160.0,6.7,15,90,30,25,10
+Cykelmekaniker, Frederiksborgvej 220,150.0,9.2,17.5,130,40,30,18
+Dyrefotograf, Amager Strandvej 150,175.0,6.3,12.5,70,22,18,8
+Kaffespecialist, Nørreport 5,200.0,7.0,15,85,25,20,10
+HR Assistent, Valby Tingsted 15,180.0,6.0,12.5,75,22,18,9
+Tøjdesigner, Gothersgade 50,175.0,5.8,10,65,20,15,8
+Skønhedskonsulent, Amagerbrogade 32,155.0,7.2,15,85,25,20,10
+Dyrlægeassistent, Søndre Fasanvej 100,150.0,9.0,17.5,120,35,28,14
+Madstylist, Falkoner Plads 20,165.0,6.8,12.5,80,25,18,9
+Projektleder, Rådhuspladsen 10,200.0,5.5,10,60,18,12,7
+Kontorassistent, Glostrup Parkvej 12,145.0,10.5,20,140,40,30,18
+Fitnesscoach, Frederiksborggade 70,190.0,6.7,12.5,70,22,18,9
+Filmredaktør, Nyhavn 10,170.0,8.3,15,100,30,25,13
+Webudvikler, Strandboulevarden 45,185.0,5.5,10,60,20,15,8
+Marketingassistent, Østerbrogade 50,175.0,6.2,12.5,70,22,18,8
+Kundekoordinator, Lyngbyvej 85,160.0,9.0,17.5,110,35,28,14
+Pædagogisk Assistent, Nørregade 14,145.0,7.8,15,95,30,25,12
+Videoproducer, Vesterbrogade 78,185.0,6.5,10,75,22,18,9
+Kaffebar Manager, Nyhavn 20,200.0,5.8,12.5,65,20,15,8
+Teknisk Designer, Amager Strandvej 30,170.0,7.0,15,85,25,20,10
+Kommunikationsmedarbejder, Gammel Kongevej 15,150.0,8.5,20,105,35,30,18
+Butiksdekoratør, Hellerupvej 12,165.0,7.5,15,90,30,25,10
+Arkivassistent, Strandvejen 90,155.0,10.2,20,120,40,35,18
+Personlig Træner, Frederiksberg Allé 100,190.0,6.0,12.5,70,22,18,9
+Fotografassistent, Kongens Nytorv 12,170.0,5.8,12.5,65,20,15,8
+Eventplanlægger, Rådhusstræde 3,190.0,7.0,15,85,25,20,10
+Salgskonsulent, Østerbro Allé 45,165.0,6.5,10,75,22,18,9
+Bibliotekar, Lyngby Hovedgade 50,155.0,9.5,17.5,110,35,30,14
+Børnefotograf, Amagerbrogade 60,150.0,7.8,15,95,30,25,12
+SoMe Specialist, Gothersgade 85,185.0,5.5,10,60,20,15,8
+Køkkenchef, Vesterbrogade 120,200.0,6.2,12.5,70,22,18,9
+Lagerkoordinator, Glostrupvej 22,175.0,10.0,20,130,40,35,18
+Musikunderviser, Nørrebroparken 15,145.0,8.5,15,100,30,25,13
+Café Manager, Nyhavn 8,180.0,5.7,12.5,65,20,15,8
+Grafisk Designer, Amager Boulevard 50,185.0,6.0,10,70,22,18,9
+Bogholder, Vesterbrogade 62,175.0,9.2,15,110,35,30,15
+Receptionist, Kongensgade 24,160.0,6.8,12.5,85,28,22,10
+Butiksleder, Lyngby Storcenter 18,200.0,10.5,20,140,40,35,18
+Kulturformidler, Gammel Torv 5,170.0,5.5,10,60,20,15,8
+Madstylist, Frederiks Allé 3,145.0,8.5,15,100,30,25,12
+Webredaktør, Islands Brygge 42,190.0,5.7,12.5,65,20,15,8
+Servicekoordinator, Nørreport Station 15,165.0,6.8,15,85,25,20,10
+Cykelreparatør, Østerbro Allé 100,155.0,9.0,20,120,35,28,14
+Kasseassistent, Amager Center 22,150.0,6.3,12.5,75,22,18,9
+Indretningskonsulent, Strandvejen 55,185.0,7.5,15,95,30,25,12
+Tekstforfatter, Ørestads Boulevard 88,200.0,5.2,10,60,18,12,7
+Kundeserviceansvarlig, Frederiksberg Centeret 12,175.0,9.5,17.5,130,40,35,18
+Filmklipper, Vesterbro Torv 7,170.0,6.0,12.5,70,22,18,9
+Personaletræner, Nyhavn 22,160.0,6.8,15,90,30,25,10
+Lufthavnsmedarbejder, Kastrupvej 50,190.0,4.5,10,65,20,15,8
+Forfatterassistent, Valby Langgade 10,145.0,8.3,15,95,30,25,12
+Børneunderviser, Rødovrevej 35,150.0,10.0,20,120,40,30,18
+Salgschef, Købmagergade 25,200.0,6.0,10,75,25,18,8
+Kommunikationsrådgiver, Kongens Nytorv 20,185.0,7.0,12.5,90,30,22,10
+IT-Supporter, Amager Strandvej 44,170.0,6.0,12.5,70,22,18,9
+Eventkoordinator, Vesterbro Torv 20,185.0,7.5,15,95,30,25,12
+Dyrepasser, Frederiksberg Allé 22,160.0,8.3,17.5,110,35,28,14
+Kaffeekspert, Nyhavn 15,200.0,5.8,10,65,20,15,8
+Butiksassistent, Østerbrogade 85,155.0,10.0,20,130,40,35,18
+Personalechef, Lyngbyvej 48,190.0,6.2,12.5,75,22,18,9
+Bibliotekskonsulent, Nørreport 25,165.0,7.2,15,85,25,20,10
+Kreativ Direktør, Amagerfælledvej 5,175.0,5.7,10,60,20,15,8
+Fitnessinstruktør, Glostrup Station 12,145.0,9.8,20,140,40,30,18
+Social Media Manager, Islands Brygge 75,200.0,5.3,12.5,60,18,12,7
+Reklamefotograf, Valby Langgade 22,180.0,8.2,15,100,30,25,12
+Køkkenleder, Gammel Kongevej 18,165.0,7.0,15,85,28,22,10
+Projektkoordinator, Nyhavn 30,190.0,6.5,12.5,70,22,18,9
+Butiksleder, Frederiksberg Center 45,170.0,9.5,17.5,120,35,28,14
+Callcenter Manager, Rådhusstræde 12,150.0,7.0,15,90,30,25,10
+Videograf, Øster Voldgade 55,175.0,6.0,12.5,65,20,15,8
+Motionscoach, Strandvejen 60,185.0,8.0,20,115,35,30,15
+Pædagogmedhjælper, Kongensgade 12,145.0,7.8,15,100,30,25,13
+Kioskbestyrer, Tivoli Hovedindgang 18,160.0,6.7,15,90,30,22,10
+Salgsspecialist, Lyngby Storcenter 25,190.0,5.5,12.5,70,22,18,9
+Kundebehandler, Nørrebrogade 65,175.0,7.2,15,95,30,25,12
+Skribent, Frederiksborgvej 120,160.0,6.5,10,75,25,20,9
+Marketingkoordinator, Østerbro 20,185.0,8.0,15,100,30,25,12
+Barista, Kongens Nytorv 3,145.0,7.5,12.5,85,28,22,10
+Social Media Specialist, Vesterbrogade 35,200.0,6.8,12.5,90,30,25,11
+Tekniker, Hovedvejen 10,170.0,9.0,17.5,120,35,28,14
+Designassistent, Strøget 20,155.0,8.5,15,100,30,25,12
+Marketingassistent, Rødovrevej 78,165.0,7.2,10,80,25,20,9
+Fotograf, Amager Boulevard 50,175.0,5.8,10,70,22,18,8
+Kundekoordinator, Valby Langgade 30,160.0,9.0,17.5,115,35,30,14
+IT-Manager, Østerbrogade 45,200.0,6.0,15,80,25,20,10
+Kaffebar Manager, Vesterbro Torv 8,190.0,7.3,12.5,95,30,25,11
+Kursuskoordinator, Lyngby Hovedgade 12,150.0,6.8,15,90,28,22,10
+Projektleder, Nørrebrogade 45,180.0,8.5,20,120,35,30,16
+Webudvikler, Kongensgade 6,170.0,7.2,12.5,85,30,25,11
+Rengøringschef, Frederiksbergvej 45,145.0,9.3,20,130,40,35,18
+Eventmedarbejder, Amagerfælledvej 22,160.0,6.0,15,75,25,20,9
+Lagerchef, Hovedvejen 8,175.0,10.0,17.5,120,35,30,15
+Produktionsassistent, Øster Voldgade 38,150.0,7.5,12.5,85,28,22,10
+Tømrerassistent, Vesterbrogade 65,160.0,8.0,15,100,30,25,12

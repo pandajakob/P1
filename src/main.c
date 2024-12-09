@@ -8,7 +8,9 @@ typedef struct Job {
     char adress[100]; 
     double salary; // kr/time
     double distanceFromAAUInKM; // km
-    double workingHours;
+
+    double workingHoursPerWeek;
+
     double travelTimeByWalkInMinutes;
     double travelTimeByBikeInMinutes;
     double travelTimeByPublicInMinutes;
@@ -20,52 +22,53 @@ typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteMod
 
 
 Job *readJobs(int *n);
-Job *filterJobs(int *n, Job *jobsArray, int minSalary, int timeOnStudies, int maxWorkload, int *k);
-
+Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int desiredJobHoursPerWeek, int studyHoursPerWeek);
 void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode);
 void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode);
-
 double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
 
-int main() {
-    int numberOfJobs = 0;
-    int numberOfJobsFiltered = 0;
+//-----------------------------------------------------------------------------------------
 
-    int inputMinimumSalary = 0;
-    int inputTimeFromHomeToAAUInMinutes = 0;
-    int inputMaximumWorkloadInHours = 0;
-    CommuteModeCategory inputCommuteModeCategory = NO_PREFERENCE;
-    int inputTimeOnStudiesInHours = 0;
+int main() {
+    int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, 
+    timeFromHomeToAAUInMinutes = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
+
+    CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
+
     
+
+    //Interaction with user
     printf("Indtast minimums maanedlige loen du skal bruge for at overleve: \n");
-    scanf("%d", &inputMinimumSalary);
+
+    scanf("%d", &minimumSalary);
 
     printf("Indtast din transporttid til AAU fra dit hjem i minutter: \n");
-    scanf("%d", &inputTimeFromHomeToAAUInMinutes);
-
-    printf("Indtast maengden af ugentlige arbejdstimer du oensker: \n");
-    scanf("%d", &inputMaximumWorkloadInHours);
+    scanf("%d", &timeFromHomeToAAUInMinutes);
 
     printf("Indtast den gennemsnitlige antal timer du bruger paa dit studie ugentligt: \n");
-    scanf("%d", &inputTimeOnStudiesInHours);
+    scanf("%d", &studyHoursPerWeek);
+
+    printf("Indtast antal timer om ugen, du maksimalt vil bruge på studie og job i alt: \n");
+    scanf("%d", &maximumWorkloadPerWeek);
 
     printf("Hvilken commute mode foretraekker du? \n 1 - Aktiv \n 2 - Groen \n 3 - Ingen praeference \n");
-    scanf("%d", &inputCommuteModeCategory);
+    scanf("%d", &commuteModeCategory);
     
-    printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
-            inputMinimumSalary, inputTimeFromHomeToAAUInMinutes, inputTimeOnStudiesInHours, inputCommuteModeCategory);
+    /*printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
+            inputMinimumSalary, inputTimeFromHomeToAAUInMinutes, inputTimeOnStudiesInHours, inputCommuteModeCategory);*/
 
+    
+    //Creating arrays for jobs and filtered jobs
     Job *jobsArray = readJobs(&numberOfJobs);
-    Job *jobsFilteredArray = filterJobs(&numberOfJobs, jobsArray, inputMinimumSalary, inputTimeOnStudiesInHours, 
-                                        inputMaximumWorkloadInHours, &numberOfJobsFiltered);
+    Job *jobsFilteredArray = filterJobs(&numberOfJobs, &numberOfJobsFiltered, jobsArray, minimumSalary, maximumWorkloadPerWeek, studyHoursPerWeek);
 
-
-    if (inputCommuteModeCategory == ACTIVE) {
+    //based on preferred commute mode category; jobs are sorted and printed to user
+    if (commuteModeCategory == ACTIVE) {
         mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
     }
-    else if (inputCommuteModeCategory == GREEN) {
+    else if (commuteModeCategory == GREEN) {
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
     }
     else {
@@ -75,51 +78,8 @@ int main() {
     return 0;
 }
 
-void printJobs(Job *jobsArray, int numberOfJobs) {
-    int i;
-    int count;
 
-    if (numberOfJobs > 10)
-        count = 10;
-    else 
-        count = numberOfJobs;
-
-    for (i = 0; i < count; i++) {
-        printf("%-30s %-30s %-15.1lf %-15.1lf %-15.1lf %-15.1lf %-15.5lf \n",
-        jobsArray[i].title, 
-        jobsArray[i].adress, 
-        jobsArray[i].salary, 
-        jobsArray[i].distanceFromAAUInKM, 
-        jobsArray[i].workingHours, 
-        jobsArray[i].travelTimeByWalkInMinutes,
-        jobsArray[i].travelTimeByCarInMinutes);
-    }
-}
-
-Job *filterJobs(int *n, Job *jobsArray, int minimumSalary, int timeOnStudiesInHours, int maximumWorkloadInHours, int *k) {
-    Job *jobsFilteredArray = malloc(*n * sizeof(Job));
-
-    if (jobsFilteredArray == NULL) {
-      printf("Memory not allocated.\n");
-      exit(EXIT_FAILURE);
-    }
-
-    *k = 0; 
-
-    for (int i = 0; i < *n; i++) {
-        double tempWorkingHours = jobsArray[i].workingHours;
-        double tempMonthlySalary = jobsArray[i].salary * tempWorkingHours * 4.33;
-        double tempWorkload = tempWorkingHours + timeOnStudiesInHours;
-
-        if (tempMonthlySalary >= minimumSalary && tempWorkload <= maximumWorkloadInHours) {
-            jobsFilteredArray[*k] = jobsArray[i]; 
-            (*k)++;
-        }
-    }
-
-    return jobsFilteredArray;
-}
-
+//reads jobs from a file and puts in jobsArray
 Job *readJobs(int *n) {
     FILE *fp;
     char row[1000];
@@ -150,7 +110,9 @@ Job *readJobs(int *n) {
         read = fscanf(fp, "%99[^,],%99[^,],%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", 
                     jobsArray[*n].title, jobsArray[*n].adress,
                     &jobsArray[*n].salary, &jobsArray[*n].distanceFromAAUInKM, 
-                    &jobsArray[*n].workingHours, &jobsArray[*n].travelTimeByWalkInMinutes, 
+
+                    &jobsArray[*n].workingHoursPerWeek, &jobsArray[*n].travelTimeByWalkInMinutes, 
+
                     &jobsArray[*n].travelTimeByBikeInMinutes, &jobsArray[*n].travelTimeByPublicInMinutes, 
                     &jobsArray[*n].travelTimeByCarInMinutes);
                     
@@ -187,6 +149,47 @@ Job *readJobs(int *n) {
 
     return jobsArray;
 }
+
+
+//filters jobs from jobsArray and puts them in jobsFilteredArray (filtering based on user input parameters)
+Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek) {
+    Job *jobsFilteredArray = malloc(*n * sizeof(Job));
+
+    if (jobsFilteredArray == NULL) {
+      printf("Memory not allocated.\n");
+      exit(EXIT_FAILURE);
+    }
+
+    *k = 0; 
+
+    for (int i = 0; i < *n; i++) {
+        double currentJobHoursPerWeek = jobsArray[i].workingHoursPerWeek;
+        double currentJobMonthlySalary = jobsArray[i].salary * currentJobHoursPerWeek * 4.33;
+        double totalWorkload = currentJobHoursPerWeek + studyHoursPerWeek;
+
+        if (currentJobMonthlySalary >= minimumSalary && totalWorkload <= maximumWorkloadPerWeek) {
+            jobsFilteredArray[*k] = jobsArray[i]; 
+            (*k)++;
+        }
+    }
+
+    return jobsFilteredArray;
+}
+
+//sorts jobsFilteredArray based on TTR in a given commute mode
+void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode) {
+    int mid = 0;
+
+    if(start < end){
+        mid = (end + start) / 2;
+
+        mergeSort(jobsArray, start, mid, commuteMode);
+        mergeSort(jobsArray, (mid + 1), end, commuteMode);
+        merge(jobsArray, start, end, mid, commuteMode);
+    }
+}
+
+//merging part of the merge sort algorithm
 
 void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode){
     int i = 0, j = 0, k = 0;
@@ -241,22 +244,10 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
     }
 }
 
-void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode) {
-    int mid = 0;
-
-    if(start < end){
-        mid = (end + start) / 2;
-
-        mergeSort(jobsArray, start, mid, commuteMode);
-        mergeSort(jobsArray, (mid + 1), end, commuteMode);
-        merge(jobsArray, start, end, mid, commuteMode);
-    }
-}
-
-
+//calculates the TTR for the student based on the given job
 double getTTR(Job job, CommuteMode commuteMode) {
     /*
-        tempWorkTime = jobsFilteredArray[i].workingHours * 60;
+        tempWorkTime = jobsFilteredArray[i].workingHoursPerWeek * 60;
         tempWalkTime = jobsFilteredArray[i].travelTimeByWalkInMinutes * 2;
         tempBikeTime = jobsFilteredArray[i].travelTimeByBikeInMinutes * 2;
         tempPublicTime = jobsFilteredArray[i].travelTimeByPublicInMinutes * 2;
@@ -270,4 +261,25 @@ double getTTR(Job job, CommuteMode commuteMode) {
    return 1.01;
 }
 
+//prints the sorted jobs
+void printJobs(Job *jobsArray, int numberOfJobs) {
+    int i;
+    int count;
+
+    if (numberOfJobs > 10)
+        count = 10;
+    else 
+        count = numberOfJobs;
+
+    for (i = 0; i < count; i++) {
+        printf("%-30s %-30s %-15.1lf %-15.1lf %-15.1lf %-15.1lf %-15.5lf \n",
+        jobsArray[i].title, 
+        jobsArray[i].adress, 
+        jobsArray[i].salary, 
+        jobsArray[i].distanceFromAAUInKM, 
+        jobsArray[i].workingHoursPerWeek, 
+        jobsArray[i].travelTimeByWalkInMinutes,
+        jobsArray[i].travelTimeByCarInMinutes);
+    }
+}
 
