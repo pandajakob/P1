@@ -22,9 +22,9 @@ typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteMod
 
 Job *readJobs(int *n);
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int desiredJobHoursPerWeek, int studyHoursPerWeek);
-void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode, int studyHoursPerWeek);
-void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode, int studyHoursPerWeek);
-double getTTR(Job job, CommuteMode commuteMode, int studyHoursPerWeek);
+void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode);
+void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode);
+double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
 
 int main() {
@@ -62,7 +62,7 @@ int main() {
 
     //based on preferred commute mode category; jobs are sorted and printed to user
     if (commuteModeCategory == ACTIVE) {
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK, studyHoursPerWeek);
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
     }
     else if (commuteModeCategory == GREEN) {
@@ -174,21 +174,21 @@ Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWo
 }
 
 //sorts jobsFilteredArray based on TTR in a given commute mode
-void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode, int studyHoursPerWeek) {
+void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode) {
     int mid = 0;
 
     if(start < end){
         mid = (end + start) / 2;
 
-        mergeSort(jobsArray, start, mid, commuteMode,studyHoursPerWeek);
-        mergeSort(jobsArray, (mid + 1), end, commuteMode,studyHoursPerWeek);
-        merge(jobsArray, start, end, mid, commuteMode,studyHoursPerWeek);
+        mergeSort(jobsArray, start, mid, commuteMode);
+        mergeSort(jobsArray, (mid + 1), end, commuteMode);
+        merge(jobsArray, start, end, mid, commuteMode);
     }
 }
 
 //merging part of the merge sort algorithm
 
-void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode, int studyHoursPerWeek){
+void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode){
     int i = 0, j = 0, k = 0;
 
     // Definerer arrays L1 og L2 med korrekt størrelse (halvering af L)
@@ -213,9 +213,9 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
     while(i < lengthL1 && j < lengthL2){
         /* Hvis L1 har det mindste tal (eller L1 og L2 har samme tal) i sammenligningen, 
         så tilføjes L1's element til L */
-        TTR1 = getTTR(L1[i], commuteMode, studyHoursPerWeek);
-        TTR2 = getTTR(L2[i], commuteMode, studyHoursPerWeek);
-        if (TTR1 <= getTTR(L2[j], commuteMode, studyHoursPerWeek)){
+        TTR1 = getTTR(L1[i], commuteMode);
+        TTR2 = getTTR(L2[i], commuteMode);
+        if (TTR1 <= getTTR(L2[j], commuteMode)){
             jobsFilteredArray[start + i + j] = L1[i];
             i++;
         }
@@ -249,11 +249,10 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
 //calculates the TTR for the student based on the given job
 
 
-double getTTR(Job job, CommuteMode commuteMode, int studyHoursPerWeek) {
+double getTTR(Job job, CommuteMode commuteMode) {
     double TTR = 0;
-    double studyInMinutes = studyHoursPerWeek/7;
-    double workingHoursInMinutes = studyHoursPerWeek/7/24/60;
-    double workloadInMinutes = (studyHoursPerWeek+job.workingHoursPerWeek)*60;
+    double workloadInMinutes = (job.workingHoursPerWeek)*60;
+    
     switch (commuteMode) {
         case WALK: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
         case BIKE: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
