@@ -26,6 +26,9 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
 void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode);
 double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
+void writeHTMLFile(Job jobsArray[], int n);
+
+//-----------------------------------------------------------------------------------------
 
 int main() {
     int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, 
@@ -71,6 +74,8 @@ int main() {
     else {
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
     }
+
+    writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered);
 
     return 0;
 }
@@ -293,3 +298,72 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
     }
 }
 
+
+void writeHTMLFile(Job jobsArray[], int n) {
+    int count = 10;
+    
+    if (n<10)
+        count = n;
+    
+    FILE *fp;
+
+    fp = fopen("./src/output.html", "w"); //åbner filen i write mode;
+    if (fp == NULL) {
+        printf("Error opening file");
+    }
+
+    //html kode, som connecter filen til styles.css
+    fputs("<link rel='stylesheet' href='style.css'>\n", fp);
+
+    char salary[100];
+    char distanceFromAAUInKM[100];
+    char travelTimeByWalkInMinutes[100];
+    char travelTimeByBikeInMinutes[100];
+    char travelTimeByPublicInMinutes[100];
+    char travelTimeByCarInMinutes[100];
+
+
+    for (int i = 0; i < n; i++) {
+        fputs("<div>\n ", fp);
+            fputs(" <h2>", fp);
+            fputs(jobsArray[i].title, fp);
+            fputs("</h2>\n", fp);
+
+            fputs(" <p> Adresse:", fp);
+            fputs(jobsArray[i].adress, fp);
+            fputs(" </p>\n", fp);
+
+            sprintf(distanceFromAAUInKM, "%lf", jobsArray[i].distanceFromAAUInKM);
+            fputs(" <p> Afstand: ", fp);
+            fputs(distanceFromAAUInKM, fp);
+            fputs("km</p>\n", fp);
+
+            sprintf(travelTimeByWalkInMinutes, "%lf", jobsArray[i].travelTimeByWalkInMinutes);
+            fputs(" <p> Walk: ", fp);
+            fputs(travelTimeByWalkInMinutes, fp);
+            fputs("min</p>\n", fp);
+
+            sprintf(travelTimeByBikeInMinutes, "%lf", jobsArray[i].travelTimeByBikeInMinutes);
+            fputs(" <p> Bike: ", fp);
+            fputs(travelTimeByBikeInMinutes, fp);
+            fputs("min</p>\n", fp);
+            
+            sprintf(travelTimeByPublicInMinutes, "%lf", jobsArray[i].travelTimeByPublicInMinutes);
+            fputs(" <p> Public: ", fp);
+            fputs(travelTimeByPublicInMinutes, fp);
+            fputs("min</p>\n", fp);
+
+            sprintf(travelTimeByCarInMinutes, "%lf", jobsArray[i].travelTimeByCarInMinutes);
+            fputs(" <p> Car: ", fp);
+            fputs(travelTimeByCarInMinutes, fp);
+            fputs("min</p>\n", fp);
+            
+            sprintf(salary, "%lf", jobsArray[i].salary);
+            fputs(" <p> Salary: ", fp);
+            fputs(salary, fp);
+            fputs("dkk/t</p>\n", fp);
+        fputs("</div>\n\n", fp);
+    }
+
+
+}
