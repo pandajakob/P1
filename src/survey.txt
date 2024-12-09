@@ -65,3 +65,4 @@ Rådgiver, Amagerfælledvej 10 ,175.0,6.5,15,80,25,20,10
 Lagermedarbejder, Vigerslev Allé 11 ,145.0,8.7,25,115,35,28,15
 Callcenter Medarbejder, Hillerødgade 72 ,155.0,9.5,17.5,120,40,30,18
 Bogholderassistent, Prags Boulevard 56 ,180.0,5.2,10,60,22,15,9
+falsk job, falsk adresse, 2000.0,5.2,10,60,22,15,9
