@@ -8,7 +8,9 @@ typedef struct Job {
     char adress[100]; 
     double salary; // kr/time
     double distanceFromAAUInKM; // km
+
     double workingHoursPerWeek;
+
     double travelTimeByWalkInMinutes;
     double travelTimeByBikeInMinutes;
     double travelTimeByPublicInMinutes;
@@ -17,6 +19,7 @@ typedef struct Job {
 
 typedef enum CommuteMode {WALK, BIKE, PUBLIC_TRANSPORT, CAR} CommuteMode;
 typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteModeCategory;
+
 
 Job *readJobs(int *n);
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int desiredJobHoursPerWeek, int studyHoursPerWeek);
@@ -32,10 +35,12 @@ int main() {
     timeFromHomeToAAUInMinutes = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
 
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
+
     
 
     //Interaction with user
     printf("Indtast minimums maanedlige loen du skal bruge for at overleve: \n");
+
     scanf("%d", &minimumSalary);
 
     printf("Indtast din transporttid til AAU fra dit hjem i minutter: \n");
@@ -52,8 +57,8 @@ int main() {
     
     /*printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
             inputMinimumSalary, inputTimeFromHomeToAAUInMinutes, inputTimeOnStudiesInHours, inputCommuteModeCategory);*/
-    
 
+    
     //Creating arrays for jobs and filtered jobs
     Job *jobsArray = readJobs(&numberOfJobs);
     Job *jobsFilteredArray = filterJobs(&numberOfJobs, &numberOfJobsFiltered, jobsArray, minimumSalary, maximumWorkloadPerWeek, studyHoursPerWeek);
@@ -72,7 +77,6 @@ int main() {
 
     return 0;
 }
-
 
 
 //reads jobs from a file and puts in jobsArray
@@ -106,7 +110,9 @@ Job *readJobs(int *n) {
         read = fscanf(fp, "%99[^,],%99[^,],%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", 
                     jobsArray[*n].title, jobsArray[*n].adress,
                     &jobsArray[*n].salary, &jobsArray[*n].distanceFromAAUInKM, 
+
                     &jobsArray[*n].workingHoursPerWeek, &jobsArray[*n].travelTimeByWalkInMinutes, 
+
                     &jobsArray[*n].travelTimeByBikeInMinutes, &jobsArray[*n].travelTimeByPublicInMinutes, 
                     &jobsArray[*n].travelTimeByCarInMinutes);
                     
@@ -143,6 +149,7 @@ Job *readJobs(int *n) {
 
     return jobsArray;
 }
+
 
 //filters jobs from jobsArray and puts them in jobsFilteredArray (filtering based on user input parameters)
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek) {
@@ -183,6 +190,7 @@ void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode) {
 }
 
 //merging part of the merge sort algorithm
+
 void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode){
     int i = 0, j = 0, k = 0;
 
@@ -274,3 +282,4 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
         jobsArray[i].travelTimeByCarInMinutes);
     }
 }
+
