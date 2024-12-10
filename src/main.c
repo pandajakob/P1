@@ -38,8 +38,6 @@ int main() {
     char jobTag[100];
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
     
-    
-
     //Interaction with user
     printf("Indtast minimums maanedlige loen du skal bruge for at overleve: \n");
 
@@ -62,7 +60,6 @@ int main() {
     
     /*printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
             inputMinimumSalary, inputTimeFromHomeToAAUInMinutes, inputTimeOnStudiesInHours, inputCommuteModeCategory);*/
-
     
     //Creating arrays for jobs and filtered jobs
     Job *jobsArray = readJobs(&numberOfJobs);
