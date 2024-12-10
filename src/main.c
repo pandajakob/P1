@@ -3,6 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
+/*kør programmet windows
+gcc -pedantic -Wall src/main.c -o ./bin/a.exe
+./bin/a.exe
+*/
 typedef struct Job {
     int Id;
     char title[100];
@@ -30,12 +34,11 @@ double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
 void writeHTMLFile(Job jobsArray[], int n);
 
-//-----------------------------------------------------------------------------------------
-
-int main() {
+int main(void) {
     int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, 
     timeFromHomeToAAUInMinutes = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
     char jobTag[100];
+
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
     
     //Interaction with user
@@ -165,8 +168,8 @@ Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWo
     }
 
     *k = 0; 
-
-    for (int i = 0; i < *n; i++) {
+    int i; 
+    for (i = 0; i < *n; i++) {
         double currentJobHoursPerWeek = jobsArray[i].workingHoursPerWeek;
         double currentJobMonthlySalary = jobsArray[i].salary * currentJobHoursPerWeek * 4.33;
         double totalWorkload = currentJobHoursPerWeek + studyHoursPerWeek;
@@ -185,14 +188,14 @@ int checkForJobTag(char jobTitle[], char jobTag[]) {
         return 1;
     }
 
-    int i;
     // copies the strings, so we don't change the original
-    char jobTitleCopy[100];
-    char jobTagCopy[100];
+    char jobTitleCopy[99];
+    char jobTagCopy[99];
     strcpy(jobTitleCopy, jobTitle);
     strcpy(jobTagCopy, jobTag);
 
     //lowercases both strings in order to compare them equally
+    int i;
     for (i = 0; i < 100; i++) {
         jobTitleCopy[i] = toupper(jobTitle[i]);
     }
@@ -229,9 +232,10 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
     // Definerer arrays L1 og L2 med korrekt størrelse (halvering af L)
     int lengthL1 = mid - start + 1;
     int lengthL2 = end - mid;
+    double TTR1, TTR2;
+
     Job L1[lengthL1];
     Job L2[lengthL2];
-    double TTR1, TTR2;
 
     // Fordeler første halvdel af L til L1
     for(i = 0; i < lengthL1; i++){
@@ -352,8 +356,8 @@ void writeHTMLFile(Job jobsArray[], int n) {
     char travelTimeByPublicInMinutes[100];
     char travelTimeByCarInMinutes[100];
 
-
-    for (int i = 0; i < n; i++) {
+    int i;
+    for (i = 0; i < n; i++) {
         fputs("<div>\n ", fp);
             fputs(" <h2>", fp);
             fputs(jobsArray[i].title, fp);
@@ -394,6 +398,5 @@ void writeHTMLFile(Job jobsArray[], int n) {
             fputs("dkk/t</p>\n", fp);
         fputs("</div>\n\n", fp);
     }
-
 
 }
