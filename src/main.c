@@ -57,7 +57,7 @@ int main() {
     printf("Hvilken commute mode foretraekker du? \n 1 - Aktiv \n 2 - Groen \n 3 - Ingen praeference \n");
     scanf("%d", &commuteModeCategory);
 
-    printf("Jobtags: ");
+    printf("Jobtags (q for ingen): ");
     scanf("%s", jobTag);
     
     /*printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
@@ -184,6 +184,10 @@ Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWo
 }
 
 int checkForJobTag(char jobTitle[], char jobTag[]) {
+    if (strstr(jobTag, "q") != NULL) {
+        return 1;
+    }
+
     int i;
     // copies the strings, so we don't change the original
     char jobTitleCopy[100];
