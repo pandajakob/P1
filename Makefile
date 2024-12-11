@@ -17,7 +17,7 @@ SRC = src/main.c
 # Genererer a.out/a.exe fil og putter den i 'bin'
 $(TARGET): $(SRC)
 	$(MKDIR)
-	gcc $(SRC) -o $(TARGET)
+	gcc -pedantic -Wall $(SRC) -o $(TARGET)
 
 # 'make run' kører programmet
 run: $(TARGET)
