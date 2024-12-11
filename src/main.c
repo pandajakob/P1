@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
+#include <math.h>
 
 /*kør programmet windows
 gcc -pedantic -Wall src/main.c -o ./bin/a.exe
@@ -25,6 +27,7 @@ typedef struct Job {
 typedef enum CommuteMode {WALK, BIKE, PUBLIC_TRANSPORT, CAR} CommuteMode;
 typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteModeCategory;
 
+void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory);
 Job *readJobs(int *n);
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek, char jobTag[]);
 int checkForJobTag(char jobTitle[], char jobTag[]);
@@ -35,38 +38,23 @@ void printJobs(Job *jobsArray, int numberOfJobs);
 void writeHTMLFile(Job jobsArray[], int n);
 
 int main(void) {
-    int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, 
-    timeFromHomeToAAUInMinutes = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
+    int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, timeFromHomeToAAUInMinutes = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
     char jobTag[100];
 
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
+
+    getParametersFromUser(&numberOfJobs, &numberOfJobsFiltered, &minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory);
     
-    //Interaction with user
-    printf("Indtast minimums maanedlige loen du skal bruge for at overleve: \n");
-
-    scanf("%d", &minimumSalary);
-
-    printf("Indtast din transporttid til AAU fra dit hjem i minutter: \n");
-    scanf("%d", &timeFromHomeToAAUInMinutes);
-
-    printf("Indtast den gennemsnitlige antal timer du bruger paa dit studie ugentligt: \n");
-    scanf("%d", &studyHoursPerWeek);
-
-    printf("Indtast antal timer om ugen, du maksimalt vil bruge på studie og job i alt: \n");
-    scanf("%d", &maximumWorkloadPerWeek);
-
-    printf("Hvilken commute mode foretraekker du? \n 1 - Aktiv \n 2 - Groen \n 3 - Ingen praeference \n");
-    scanf("%d", &commuteModeCategory);
-
-    printf("Jobtags (q for ingen): ");
+    /*printf("Jobtags (q for ingen): ");
     scanf("%s", jobTag);
     
-    /*printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
+    printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
             inputMinimumSalary, inputTimeFromHomeToAAUInMinutes, inputTimeOnStudiesInHours, inputCommuteModeCategory);*/
     
     //Creating arrays for jobs and filtered jobs
     Job *jobsArray = readJobs(&numberOfJobs);
     Job *jobsFilteredArray = filterJobs(&numberOfJobs, &numberOfJobsFiltered, jobsArray, minimumSalary, maximumWorkloadPerWeek, studyHoursPerWeek, jobTag);
+    free(jobsArray);
 
     //based on preferred commute mode category; jobs are sorted and printed to user
     if (commuteModeCategory == ACTIVE) {
@@ -82,15 +70,157 @@ int main(void) {
 
     writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered);
 
+    free(jobsFilteredArray);
+
     return 0;
 }
 
+//interaktion med user for at få parametre
+void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory){   
+    double tempInput;
+
+    // Prompt for minimum salary
+    printf("Indtast dit minimumsbeløb for at betale regninger. Skriv 0, hvis du ikke har et beløb: ");
+    while(true){
+        // Check om input er et gyldigt tal
+        if (scanf("%lf", &tempInput) != 1) {
+            printf("Ugyldigt input! Vælg et tal: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input er inden for det gyldige interval
+        if (tempInput < 0 || tempInput > 15000) {
+            printf("Ugyldigt input! Vælg et tal mellem 0 og 15.000: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        *minimumSalary = (int)tempInput;
+        break;
+    }
+
+    // Prompt for time from home to AAU
+    printf("Indtast transporttid til AAU (1-90 min): ");
+    while(true){
+        // Check om input er et gyldigt tal
+        if (scanf("%lf", &tempInput) != 1) {
+            printf("Ugyldigt input! Vælg et tal: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input er inden for det gyldige interval
+        if (tempInput < 1 || tempInput > 90) {
+            printf("Ugyldigt input! Vælg et tal mellem 1 og 90: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        *timeFromHomeToAAUInMinutes = (int)tempInput;
+        break;
+    }
+
+    // Prompt for study hours per week
+    printf("Indtast studietimer pr. uge (0-38): ");
+    while(true){
+        // Check om input er et gyldigt tal
+        if (scanf("%lf", &tempInput) != 1) {
+            printf("Ugyldigt input! Vælg et tal: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input er inden for det gyldige interval
+        if (tempInput < 0 || tempInput > 38) {
+            printf("Ugyldigt input! Vælg et tal mellem 0 og 38: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        *studyHoursPerWeek = (int)tempInput;
+        break;
+    }
+
+    // Prompt for maximum workload per week
+    printf("Indtast maksimal samlet arbejdsbyrde (studie+job, max 50 timer): ");
+    while(true){
+        // Check om input er et gyldigt tal
+        if (scanf("%lf", &tempInput) != 1) {
+            printf("Ugyldigt input! Vælg et tal: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input er inden for det gyldige interval (større end eller lig med studietimer)
+        if (tempInput < *studyHoursPerWeek) {
+            printf("Ugyldigt input! Minimum arbejdsbyrde er %d timer: ", *studyHoursPerWeek);
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input overskrider den maksimalt tilladte arbejdsbyrde
+        if (tempInput > 50) {
+            printf("Ugyldigt input! Forskningen siger for stor arbejdsbyrde er skadeligt for mental velbefindende\nMaksimal arbejdsbyrde er 50 timer: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om studietimer og arbejdstimer overgår 50 timer om ugen
+        if (tempInput + *studyHoursPerWeek > 50) {
+            printf("Ugyldigt input! Forskningen siger for stor arbejdsbyrde er skadeligt for mental velbefindende\nSamlet arbejdsbyrde (studie + job) må ikke overstige 50 timer: ");
+            while (getchar() != '\n');
+            continue;
+        }
+        *maximumWorkloadPerWeek = (int)tempInput;
+        break;
+    }
+
+    // Prompt for preferred transport mode
+    printf("Foretrukken transport (1=Aktiv, 2=Grøn, 3=Ingen): ");
+    while(true){
+        // Check om input er et gyldigt tal
+        if (scanf("%lf", &tempInput) != 1) {
+            printf("Ugyldigt input! Vælg et tal: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input er inden for det gyldige interval
+        if (tempInput < 1 || tempInput > 3) {
+            printf("Ugyldigt input! Vælg 1, 2 eller 3: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        *commuteModeCategory = (int)tempInput;
+        break;
+    }
+}
 
 //reads jobs from a file and puts in jobsArray
 Job *readJobs(int *n) {
     FILE *fp;
     char row[1000];
-    char *token;
 
     int capacity = 2;
     
@@ -104,7 +234,7 @@ Job *readJobs(int *n) {
     fp = fopen("./src/survey.txt", "r"); 
 
     if (fp == NULL) {
-        printf("Error opening file\n");
+        printf("Error opening file. Kontroller, at filen 'survey.txt' findes i 'src'-mappen.\n");
         exit(EXIT_FAILURE);
     }
     
@@ -157,7 +287,6 @@ Job *readJobs(int *n) {
     return jobsArray;
 }
 
-
 //filters jobs from jobsArray and puts them in jobsFilteredArray (filtering based on user input parameters)
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek, char jobTag[]) {
     Job *jobsFilteredArray = malloc(*n * sizeof(Job));
@@ -182,6 +311,7 @@ Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWo
 
     return jobsFilteredArray;
 }
+
 
 int checkForJobTag(char jobTitle[], char jobTag[]) {
     if (strstr(jobTag, "q") != NULL) {
@@ -210,7 +340,6 @@ int checkForJobTag(char jobTitle[], char jobTag[]) {
     return 0;
 }
 
-
 //sorts jobsFilteredArray based on TTR in a given commute mode
 void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode) {
     int mid = 0;
@@ -223,7 +352,6 @@ void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode) {
         merge(jobsArray, start, end, mid, commuteMode);
     }
 }
-
 
 //merging part of the merge sort algorithm
 void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode){
@@ -253,7 +381,7 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
         /* Hvis L1 har det mindste tal (eller L1 og L2 har samme tal) i sammenligningen, 
         så tilføjes L1's element til L */
         TTR1 = getTTR(L1[i], commuteMode);
-        TTR2 = getTTR(L2[i], commuteMode);
+        TTR2 = getTTR(L2[j], commuteMode);
         if (TTR1 <= TTR2){
             jobsFilteredArray[start + i + j] = L1[i];
             i++;
@@ -286,8 +414,6 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
 }
 
 //calculates the TTR for the student based on the given job
-
-
 double getTTR(Job job, CommuteMode commuteMode) {
     double TTR = 0;
     double workloadInMinutes = (job.workingHoursPerWeek)*60;
@@ -304,8 +430,6 @@ double getTTR(Job job, CommuteMode commuteMode) {
 
    return TTR;
 }
-
-
 
 //prints the sorted jobs
 void printJobs(Job *jobsArray, int numberOfJobs) {
@@ -334,10 +458,10 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
 
 
 void writeHTMLFile(Job jobsArray[], int n) {
-    int count = 10;
+    /*int count = 10;
     
     if (n<10)
-        count = n;
+        count = n;*/
     
     FILE *fp;
 
