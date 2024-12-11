@@ -6,8 +6,9 @@
 #include <math.h>
 
 /*kør programmet windows
-gcc -pedantic -Wall src/main.c -o ./bin/a.exe
-./bin/a.exe
+    1: mkdir -p bin
+    2: gcc -pedantic -Wall src/main.c -o ./bin/a.exe
+    3: ./bin/a.exe
 */
 typedef struct Job {
     int Id;
