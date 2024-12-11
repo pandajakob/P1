@@ -15,12 +15,9 @@ endif
 SRC = src/main.c
 
 # Genererer a.out/a.exe fil og putter den i 'bin'
-gcc -pedantic -Wall src/main.c -o ./bin/a.out
-FLAGS = -pedantic -Wall 
-
 $(TARGET): $(SRC)
 	$(MKDIR)
-	gcc ${FLAGS} $(SRC) -o $(TARGET)
+	gcc -pedantic -Wall $(SRC) -o $(TARGET)
 
 # 'make run' kører programmet
 run: $(TARGET)
