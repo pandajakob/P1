@@ -43,7 +43,7 @@ int main(void) {
 
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
 
-    getParametersFromUser(&numberOfJobs, &numberOfJobsFiltered, &minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory);
+    //getParametersFromUser(&numberOfJobs, &numberOfJobsFiltered, &minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory);
     
     /*printf("Jobtags (q for ingen): ");
     scanf("%s", jobTag);
