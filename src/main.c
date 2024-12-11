@@ -105,7 +105,6 @@ void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* mi
             continue; 
         }
         *minimumSalary = (int)tempInput;
-        tries = 0;
         break;
     }
 
@@ -134,7 +133,6 @@ void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* mi
             continue; 
         }
         *timeFromHomeToAAUInMinutes = (int)tempInput;
-        tries = 0;
         break;
     }
 
@@ -163,7 +161,6 @@ void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* mi
             continue; 
         }
         *studyHoursPerWeek = (int)tempInput;
-        tries = 0;
         break;
     }
 
@@ -200,7 +197,6 @@ void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* mi
         }
         
         *maximumWorkloadPerWeek = (int)tempInput;
-        tries = 0;
         break;
     }
 
@@ -229,7 +225,6 @@ void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* mi
             continue; 
         }
         *commuteModeCategory = (int)tempInput;
-        tries = 0;
         break;
     }
 }
