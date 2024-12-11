@@ -22,7 +22,7 @@ jobs:
 
     - name: compile main.c
       run: |
-        gcc src/main.c -o bin/a.exe
+        gcc src/main.c -o bin/a.exe -lm
 
     - name: run main.c
       run: |

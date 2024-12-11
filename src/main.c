@@ -77,111 +77,162 @@ int main(void) {
 
 //interaktion med user for at få parametre
 void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory){   
-    int tempInput;
+    double tempInput;
+    int tries = 0;
 
     // Prompt for minimum salary
     printf("Indtast dit minimumsbeløb for at betale regninger. Skriv 0, hvis du ikke har et beløb: ");
-    while(true){
+    while(tries < 5){
         // Check om input er et gyldigt tal
-        if (scanf("%d", &tempInput) != 1) {
+        if (scanf("%lf", &tempInput) != 1) {
             printf("Ugyldigt input! Vælg et tal: ");
-            while (getchar() != '\n'); 
+            while (getchar() != '\n');
+            tries++;
             continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n');
+            tries++;
+            continue;
         }
         // Check om input er inden for det gyldige interval
         if (tempInput < 0 || tempInput > 15000) {
             printf("Ugyldigt input! Vælg et tal mellem 0 og 15.000: ");
-            while (getchar() != '\n'); 
+            while (getchar() != '\n');
+            tries++;
             continue; 
         }
-        *minimumSalary = tempInput;
+        *minimumSalary = (int)tempInput;
+        tries = 0;
         break;
     }
 
     // Prompt for time from home to AAU
     printf("Indtast transporttid til AAU (1-90 min): ");
-    while(true){
+    while(tries < 5){
         // Check om input er et gyldigt tal
-        if (scanf("%d", &tempInput) != 1) {
+        if (scanf("%lf", &tempInput) != 1) {
             printf("Ugyldigt input! Vælg et tal: ");
-            while (getchar() != '\n'); 
+            while (getchar() != '\n');
+            tries++;
             continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            tries++;
+            continue;
         }
         // Check om input er inden for det gyldige interval
         if (tempInput < 1 || tempInput > 90) {
             printf("Ugyldigt input! Vælg et tal mellem 1 og 90: ");
             while (getchar() != '\n'); 
+            tries++;
             continue; 
         }
-        *timeFromHomeToAAUInMinutes = tempInput;
+        *timeFromHomeToAAUInMinutes = (int)tempInput;
+        tries = 0;
         break;
     }
 
     // Prompt for study hours per week
     printf("Indtast studietimer pr. uge (0-38): ");
-    while(true){
+    while(tries < 5){
         // Check om input er et gyldigt tal
-        if (scanf("%d", &tempInput) != 1) {
+        if (scanf("%lf", &tempInput) != 1) {
             printf("Ugyldigt input! Vælg et tal: ");
             while (getchar() != '\n'); 
+            tries++;
             continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            tries++;
+            continue;
         }
         // Check om input er inden for det gyldige interval
         if (tempInput < 0 || tempInput > 38) {
             printf("Ugyldigt input! Vælg et tal mellem 0 og 38: ");
             while (getchar() != '\n'); 
+            tries++;
             continue; 
         }
-        *studyHoursPerWeek = tempInput;
+        *studyHoursPerWeek = (int)tempInput;
+        tries = 0;
         break;
     }
 
     // Prompt for maximum workload per week
     printf("Indtast maksimal samlet arbejdsbyrde (studie+job, max 50 timer): ");
-    while(true){
+    while(tries < 5){
         // Check om input er et gyldigt tal
-        if (scanf("%d", &tempInput) != 1) {
+        if (scanf("%lf", &tempInput) != 1) {
             printf("Ugyldigt input! Vælg et tal: ");
             while (getchar() != '\n'); 
+            tries++;
+            continue;
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            tries++;
             continue;
         }
         // Check om input er inden for det gyldige interval (større end eller lig med studietimer)
         if (tempInput < *studyHoursPerWeek) {
             printf("Ugyldigt input! Minimum arbejdsbyrde er %d timer: ", *studyHoursPerWeek);
             while (getchar() != '\n'); 
+            tries++;
             continue;
         }
         // Check om input overskrider den maksimalt tilladte arbejdsbyrde
         if (tempInput > 50) {
             printf("Ugyldigt input! Forskningen siger for stor arbejdsbyrde er skadeligt for mental velbefindende\nMaksimal arbejdsbyrde er 50 timer: ");
             while (getchar() != '\n'); 
+            tries++;
             continue;
         }
         
-        *maximumWorkloadPerWeek = tempInput;
+        *maximumWorkloadPerWeek = (int)tempInput;
+        tries = 0;
         break;
     }
 
     // Prompt for preferred transport mode
     printf("Foretrukken transport (1=Aktiv, 2=Grøn, 3=Ingen): ");
-    while(true){
+    while(tries < 5){
         // Check om input er et gyldigt tal
-        if (scanf("%d", &tempInput) != 1) {
+        if (scanf("%lf", &tempInput) != 1) {
             printf("Ugyldigt input! Vælg et tal: ");
             while (getchar() != '\n'); 
+            tries++;
             continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            tries++;
+            continue;
         }
         // Check om input er inden for det gyldige interval
         if (tempInput < 1 || tempInput > 3) {
             printf("Ugyldigt input! Vælg 1, 2 eller 3: ");
             while (getchar() != '\n'); 
+            tries++;
             continue; 
         }
-        *commuteModeCategory = tempInput;
+        *commuteModeCategory = (int)tempInput;
+        tries = 0;
         break;
     }
 }
-
 
 //reads jobs from a file and puts in jobsArray
 Job *readJobs(int *n) {
