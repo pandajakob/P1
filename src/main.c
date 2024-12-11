@@ -20,7 +20,7 @@ typedef struct Job {
     double travelTimeByBikeInMinutes;
     double travelTimeByPublicInMinutes;
     double travelTimeByCarInMinutes;
-} Job;
+} Job; 
 
 typedef enum CommuteMode {WALK, BIKE, PUBLIC_TRANSPORT, CAR} CommuteMode;
 typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteModeCategory;
@@ -254,7 +254,7 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
         så tilføjes L1's element til L */
         TTR1 = getTTR(L1[i], commuteMode);
         TTR2 = getTTR(L2[i], commuteMode);
-        if (TTR1 <= getTTR(L2[j], commuteMode)){
+        if (TTR1 <= TTR2){
             jobsFilteredArray[start + i + j] = L1[i];
             i++;
         }
