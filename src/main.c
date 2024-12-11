@@ -43,7 +43,7 @@ int main(void) {
 
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
 
-    //getParametersFromUser(&numberOfJobs, &numberOfJobsFiltered, &minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory);
+    getParametersFromUser(&numberOfJobs, &numberOfJobsFiltered, &minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory);
     
     /*printf("Jobtags (q for ingen): ");
     scanf("%s", jobTag);
@@ -68,7 +68,7 @@ int main(void) {
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
     }
 
-    writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered);
+    //writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered);
 
     free(jobsFilteredArray);
 
@@ -181,12 +181,7 @@ void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* mi
             while (getchar() != '\n'); 
             continue;
         }
-        // Check om studietimer og arbejdstimer overgår 50 timer om ugen
-        if (tempInput + *studyHoursPerWeek > 50) {
-            printf("Ugyldigt input! Forskningen siger for stor arbejdsbyrde er skadeligt for mental velbefindende\nSamlet arbejdsbyrde (studie + job) må ikke overstige 50 timer: ");
-            while (getchar() != '\n');
-            continue;
-        }
+        
         *maximumWorkloadPerWeek = (int)tempInput;
         break;
     }
@@ -303,9 +298,10 @@ Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWo
         double currentJobMonthlySalary = jobsArray[i].salary * currentJobHoursPerWeek * 4.33;
         double totalWorkload = currentJobHoursPerWeek + studyHoursPerWeek;
 
-        if (currentJobMonthlySalary >= minimumSalary && totalWorkload <= maximumWorkloadPerWeek && checkForJobTag(jobsArray[i].title, jobTag)) {
+        if (currentJobMonthlySalary >= minimumSalary && totalWorkload <= maximumWorkloadPerWeek) {
             jobsFilteredArray[*k] = jobsArray[i]; 
             (*k)++;
+        //&& checkForJobTag(jobsArray[i].title, jobTag)
         }
     }
 
