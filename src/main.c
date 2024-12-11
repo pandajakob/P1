@@ -27,7 +27,7 @@ typedef struct Job {
 typedef enum CommuteMode {WALK, BIKE, PUBLIC_TRANSPORT, CAR} CommuteMode;
 typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteModeCategory;
 
-void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory);
+void getParametersFromUser(int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode);
 Job *readJobs(int *n);
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek, char jobTag[]);
 int checkForJobTag(char jobTitle[], char jobTag[]);
@@ -37,14 +37,14 @@ double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
 void writeHTMLFile(Job jobsArray[], int n);
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    int isDebugMode = argc > 1;
     int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, timeFromHomeToAAUInMinutes = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
     char jobTag[100];
 
-    CommuteModeCategory commuteModeCategory = NO_PREFERENCE; 
+    CommuteModeCategory commuteModeCategory = NO_PREFERENCE;
 
-    getParametersFromUser(&numberOfJobs, &numberOfJobsFiltered, &minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory);
-    
+    getParametersFromUser(&minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory, isDebugMode);
     /*printf("Jobtags (q for ingen): ");
     scanf("%s", jobTag);
     
@@ -76,11 +76,15 @@ int main(void) {
 }
 
 //interaktion med user for at få parametre
-void getParametersFromUser(int* numberOfJobs, int* numberOfJobsFiltered, int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory){   
+void getParametersFromUser(int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode){   
     double tempInput;
 
     // Prompt for minimum salary
     printf("Indtast dit minimumsbeløb for at betale regninger. Skriv 0, hvis du ikke har et beløb: ");
+    if (isDebugMode) {
+        // indsæt test-værdier
+        return;
+    }
     while(true){
         // Check om input er et gyldigt tal
         if (scanf("%lf", &tempInput) != 1) {

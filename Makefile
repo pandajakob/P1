@@ -21,7 +21,7 @@ $(TARGET): $(SRC)
 
 # 'make run' kører programmet
 run: $(TARGET)
-	$(TARGET)
+	$(TARGET) 5
 
 # 'make clean' giver mulighed for at slette bin
 clean:
