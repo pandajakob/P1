@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
     //based on preferred commute mode category; jobs are sorted and printed to user
     FILE *fp;
 
-    fp = fopen("C:/Users/nichz/Desktop/P1/P1/src/output.html", "w"); //opens the file in add write mode;
+    fp = fopen("./src/output.html", "w"); //opens the file in add write mode;
     if (fp == NULL) {
         printf("Error opening file");
     }
@@ -522,7 +522,7 @@ void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]) {
         count = n;
     FILE *fp;
 
-    fp = fopen("C:/Users/nichz/Desktop/P1/P1/src/output.html", "a"); //opens the file in add write mode;
+    fp = fopen("./src/output.html", "a"); //opens the file in add write mode;
     if (fp == NULL) {
         printf("Error opening file");
     }
