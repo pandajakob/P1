@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
     }
 
-    //writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered);
+    // writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered);
 
     free(jobsFilteredArray);
 
@@ -417,13 +417,29 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
 //calculates the TTR for the student based on the given job
 double getTTR(Job job, CommuteMode commuteMode) {
     double TTR = 0;
+    double workDaysPerWeek;
     double workloadInMinutes = (job.workingHoursPerWeek)*60;
-    
+
+    if (job.workingHoursPerWeek <= 8)
+        workDaysPerWeek = 1;
+    else if (job.workingHoursPerWeek > 8 && job.workingHoursPerWeek <= 16) 
+        workDaysPerWeek = 2;
+    else if(job.workingHoursPerWeek > 16 && job.workingHoursPerWeek <= 24) 
+        workDaysPerWeek = 3;
+    else if (job.workingHoursPerWeek > 24 && job.workingHoursPerWeek <= 32) 
+        workDaysPerWeek = 4;
+    else if (job.workingHoursPerWeek > 32 && job.workingHoursPerWeek <= 40) 
+        workDaysPerWeek = 5;
+    else if (job.workingHoursPerWeek > 40 && job.workingHoursPerWeek <= 48)
+        workDaysPerWeek = 6;
+    else
+        workDaysPerWeek = 7;
+
     switch (commuteMode) {
-        case WALK: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
-        case BIKE: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
-        case PUBLIC_TRANSPORT: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
-        case CAR: TTR = job.travelTimeByWalkInMinutes/workloadInMinutes; break;
+        case WALK: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/(workloadInMinutes); break;
+        case BIKE: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/workloadInMinutes; break;
+        case PUBLIC_TRANSPORT: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/workloadInMinutes; break;
+        case CAR: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/workloadInMinutes; break;
         default: break;
     }
 
