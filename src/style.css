@@ -23,6 +23,7 @@ table, th, td {
 }
 
 .tableWrapper {
+    float: left;
     margin: 10px;
     width: 45%;
     text-align: center;

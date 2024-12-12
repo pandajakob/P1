@@ -1,5 +1,4 @@
 title,adress,salary,distanceFromAAU,workingHours,timeWalk,timeBike,timePublic,timeCar
-
 Barista,Vesterbrogade 42,145.0,7.5,15,90,30,25,15
 Kassemedarbejder,Rødovre Centrum,150.0,15.0,20,180,45,35,20
 Studentermedhjælper i IT, Amager Strandvej 100 ,175.0,6.0,15,75,25,20,10
@@ -174,4 +173,5 @@ Rengøringschef, Frederiksbergvej 45,145.0,9.3,20,130,40,35,18
 Eventmedarbejder, Amagerfælledvej 22,160.0,6.0,15,75,25,20,9
 Lagerchef, Hovedvejen 8,175.0,10.0,17.5,120,35,30,15
 Produktionsassistent, Øster Voldgade 38,150.0,7.5,12.5,85,28,22,10
-Tømrerassistent, Vesterbrogade 65,160.0,8.0,15,100,30,25,12
+Tømrerassistent, Vesterbrogade 65,160.0,8.0,15,100,30,25,12¨
+Nichlas, Alle steder 65,1000.0,5.0,15,1000,300,250,1

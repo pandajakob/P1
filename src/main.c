@@ -36,7 +36,7 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
 void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode);
 double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
-void writeHTMLFile(Job jobsArray[], int n);
+void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]);
 
 
 int main(int argc, char *argv[]) {
@@ -60,18 +60,55 @@ int main(int argc, char *argv[]) {
     free(jobsArray);
 
     //based on preferred commute mode category; jobs are sorted and printed to user
+    FILE *fp;
+
+    fp = fopen("C:/Users/nichz/Desktop/P1/P1/src/output.html", "w"); //opens the file in add write mode;
+    if (fp == NULL) {
+        printf("Error opening file");
+    }
+    fputs("<link rel='stylesheet' href='style.css'>\n", fp); //html code connects to the file styles.css
+   
     if (commuteModeCategory == ACTIVE) {
+        fputs(" <div class=\"tableContainer\">", fp);
         mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Gå");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
+
+        fputs(" </div>", fp);
     }
     else if (commuteModeCategory == GREEN) {
-        printJobs(jobsFilteredArray, numberOfJobsFiltered);
+        fputs(" <div class=\"tableContainer\">", fp);
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Gå");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
+        
+        fputs(" </div>", fp);
     }
     else {
-        printJobs(jobsFilteredArray, numberOfJobsFiltered);
-    }
+        fputs(" <div class=\"tableContainer\">", fp);
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Gå");
 
-    // writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered);
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
+        
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, CAR);
+        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Bil");
+
+        fputs(" </div>", fp);
+    }
+    fclose(fp);
 
     free(jobsFilteredArray);
 
@@ -438,14 +475,14 @@ double getTTR(Job job, CommuteMode commuteMode) {
         workDaysPerWeek = 7;
 
     switch (commuteMode) {
-        case WALK: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/(workloadInMinutes); break;
-        case BIKE: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/workloadInMinutes; break;
-        case PUBLIC_TRANSPORT: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/workloadInMinutes; break;
-        case CAR: TTR = (job.travelTimeByWalkInMinutes*workDaysPerWeek)/workloadInMinutes; break;
+        case WALK: TTR = (job.travelTimeByWalkInMinutes * workDaysPerWeek) / (workloadInMinutes); break;
+        case BIKE: TTR = (job.travelTimeByBikeInMinutes * workDaysPerWeek) / workloadInMinutes; break;
+        case PUBLIC_TRANSPORT: TTR = (job.travelTimeByPublicInMinutes * workDaysPerWeek) / workloadInMinutes; break;
+        case CAR: TTR = (job.travelTimeByCarInMinutes* workDaysPerWeek) / workloadInMinutes; break;
         default: break;
     }
 
-    printf("TTR for job: %lf\n", TTR);
+    //printf("TTR for job: %lf\n", TTR);
 
    return TTR;
 }
@@ -476,21 +513,21 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
 }
 
 
-void writeHTMLFile(Job jobsArray[], int n) {
-    int count = 10;
-    
+void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]) {
+    int count;
 
-    if (n<10)
+    if (n > 10)
+        count = 10;
+    else 
         count = n;
-    
     FILE *fp;
 
-    fp = fopen("C:/Users/nichz/Desktop/P1/P1/src/output.html", "w"); //åbner filen i write mode;
+    fp = fopen("C:/Users/nichz/Desktop/P1/P1/src/output.html", "a"); //opens the file in add write mode;
     if (fp == NULL) {
         printf("Error opening file");
     }
 
-    //html kode, som connecter filen til styles.css
+    //html code connects to the file styles.css
     fputs("<link rel='stylesheet' href='style.css'>\n", fp);
 
     char salary[100];
@@ -499,52 +536,55 @@ void writeHTMLFile(Job jobsArray[], int n) {
     char travelTimeByBikeInMinutes[100];
     char travelTimeByPublicInMinutes[100];
     char travelTimeByCarInMinutes[100];
-    const char* modeChoice[] = {"Gå", "Cykle", "Offentligtransport", "Bil"};
-    char modeChoiceString[100];
+    char workingHoursPerWeek[100];
+    char comumuteMode10[100];
 
-    fputs(" <div class=\"tableContainer\">", fp);
-    for (int i = 0; i < 4; i++){
-        fputs(" <div class=\"tableWrapper\">", fp);
-        fputs(" <p>", fp);
-        sprintf(modeChoiceString, "Top 10 for %s", modeChoice[i]);
-        fputs(modeChoiceString, fp);
-        fputs(" </p>", fp);
-        fputs(" <table>", fp);
-        fputs(" <tr>", fp);
-            fputs(" <th>", fp);
-            fputs("Title", fp);
-            fputs(" </th>\n", fp);
+    fputs(" <div class=\"tableWrapper\">", fp);
+    fputs(" <p>", fp);
+    sprintf(comumuteMode10, "Top 10 for %s", commuteMode);
+    fputs(comumuteMode10, fp);
+    fputs(" </p>", fp);
+    fputs(" <table>", fp);
+    fputs(" <tr>", fp);
+        fputs(" <th>", fp);
+        fputs("Title", fp);
+        fputs(" </th>\n", fp);
 
-            fputs(" <th>", fp);
-            fputs("Adresse", fp);
-            fputs(" </th>\n", fp);
+        fputs(" <th>", fp);
+        fputs("Adresse", fp);
+        fputs(" </th>\n", fp);
 
-            fputs(" <th>", fp);
-            fputs("Afstand", fp);
-            fputs(" </th>\n", fp);
+        fputs(" <th>", fp);
+        fputs("Afstand", fp);
+        fputs(" </th>\n", fp);
 
-            fputs(" <th>", fp);
-            fputs("Gå", fp);
-            fputs(" </th>\n", fp);
+        fputs(" <th>", fp);
+        fputs("Gå", fp);
+        fputs(" </th>\n", fp);
 
-            fputs(" <th>", fp);
-            fputs("Cykle", fp);
-            fputs(" </th>\n", fp);
+        fputs(" <th>", fp);
+        fputs("Cykle", fp);
+        fputs(" </th>\n", fp);
 
-            fputs(" <th>", fp);
-            fputs("Offentligtransport", fp);
-            fputs(" </th>\n", fp);
+        fputs(" <th>", fp);
+        fputs("Offentligtransport", fp);
+        fputs(" </th>\n", fp);
 
-            fputs(" <th>", fp);
-            fputs("Bil", fp);
-            fputs(" </th>\n", fp);
+        fputs(" <th>", fp);
+        fputs("Bil", fp);
+        fputs(" </th>\n", fp);
 
-            fputs(" <th>", fp);
-            fputs("Time løn", fp);
-            fputs(" </th>\n", fp);
-            fputs(" </tr>", fp);
+        fputs(" <th>", fp);
+        fputs("Time løn", fp);
+        fputs(" </th>\n", fp);
+
+        fputs(" <th>", fp);
+        fputs("Timer om ugen", fp);
+        fputs(" </th>\n", fp);
+
+        fputs(" </tr>", fp);
         
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < count; i++) {
             fputs(" <tr>", fp);
                 fputs(" <td>", fp);
                 fputs(jobsArray[i].title, fp);
@@ -583,11 +623,14 @@ void writeHTMLFile(Job jobsArray[], int n) {
                 fputs(" <td>", fp);
                 fputs(salary, fp);
                 fputs("</t>\n", fp);
+             
+                sprintf(workingHoursPerWeek, "%.1lf timer", jobsArray[i].workingHoursPerWeek);
+                fputs(" <td>", fp);
+                fputs(workingHoursPerWeek, fp);
+                fputs("</t>\n", fp);
+
             fputs(" </tr>", fp);
         }
-        
         fputs(" </table>", fp);
         fputs(" </div>", fp);
-    }
-    fputs(" </div>", fp);
 }
