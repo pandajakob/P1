@@ -1,18 +1,29 @@
 * {
-    background: rgb(34,34,34); 
-    background: linear-gradient(180deg, rgba(34,34,34,1) 0%, rgba(68,68,68,1) 45%, rgba(23,23,23,1) 100%); 
+    color: #ffffff; 
 }
 
-* {
-    color: #ffffff; 
+html, body {
+    height: 100%;  
+    background: rgb(34,34,34); 
+    background: linear-gradient(180deg, rgba(34,34,34,1) 0%, rgba(68,68,68,1) 45%, rgba(23,23,23,1) 100%); 
 }
 
 table, th, td {
     background: rgb(34,34,34); 
     border: 1px solid black;
     border-collapse: collapse;
-    max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 20px;
 }
 
+.tableContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tableWrapper {
+    margin: 10px;
+    width: 45%;
+    text-align: center;
+}

@@ -6,8 +6,9 @@
 #include <math.h>
 
 /*kør programmet windows
-gcc -pedantic -Wall src/main.c -o ./bin/a.exe
-./bin/a.exe
+    1: mkdir -p bin
+    2: gcc -pedantic -Wall src/main.c -o ./bin/a.exe
+    3: ./bin/a.exe
 */
 typedef struct Job {
     int Id;
@@ -458,14 +459,15 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
 
 
 void writeHTMLFile(Job jobsArray[], int n) {
-    /*int count = 10;
+    int count = 10;
     
+
     if (n<10)
-        count = n;*/
+        count = n;
     
     FILE *fp;
 
-    fp = fopen("./src/output.html", "w"); //åbner filen i write mode;
+    fp = fopen("C:/Users/nichz/Desktop/P1/P1/src/output.html", "w"); //åbner filen i write mode;
     if (fp == NULL) {
         printf("Error opening file");
     }
@@ -479,9 +481,18 @@ void writeHTMLFile(Job jobsArray[], int n) {
     char travelTimeByBikeInMinutes[100];
     char travelTimeByPublicInMinutes[100];
     char travelTimeByCarInMinutes[100];
+    const char* modeChoice[] = {"Gå", "Cykle", "Offentligtransport", "Bil"};
+    char modeChoiceString[100];
 
-    fputs(" <table>", fp);
-        fputs(" </tr>", fp);
+    fputs(" <div class=\"tableContainer\">", fp);
+    for (int i = 0; i < 4; i++){
+        fputs(" <div class=\"tableWrapper\">", fp);
+        fputs(" <p>", fp);
+        sprintf(modeChoiceString, "Top 10 for %s", modeChoice[i]);
+        fputs(modeChoiceString, fp);
+        fputs(" </p>", fp);
+        fputs(" <table>", fp);
+        fputs(" <tr>", fp);
             fputs(" <th>", fp);
             fputs("Title", fp);
             fputs(" </th>\n", fp);
@@ -511,50 +522,54 @@ void writeHTMLFile(Job jobsArray[], int n) {
             fputs(" </th>\n", fp);
 
             fputs(" <th>", fp);
-            fputs("Løn", fp);
+            fputs("Time løn", fp);
             fputs(" </th>\n", fp);
-        fputs(" </tr>", fp);
-    for (int i = 0; i < n; i++) {
-        fputs(" <tr>", fp);
-            fputs(" <td>", fp);
-            fputs(jobsArray[i].title, fp);
-            fputs("</td>\n", fp);
+            fputs(" </tr>", fp);
+        
+        for (int i = 0; i < n; i++) {
+            fputs(" <tr>", fp);
+                fputs(" <td>", fp);
+                fputs(jobsArray[i].title, fp);
+                fputs("</td>\n", fp);
 
-            fputs(" <td>", fp);
-            fputs(jobsArray[i].adress, fp);
-            fputs(" </td>\n", fp);
+                fputs(" <td>", fp);
+                fputs(jobsArray[i].adress, fp);
+                fputs(" </td>\n", fp);
 
-            sprintf(distanceFromAAUInKM, "%.1lf", jobsArray[i].distanceFromAAUInKM);
-            fputs(" <td>", fp);
-            fputs(distanceFromAAUInKM, fp);
-            fputs("</td>\n", fp);
+                sprintf(distanceFromAAUInKM, "%.1lf km", jobsArray[i].distanceFromAAUInKM);
+                fputs(" <td>", fp);
+                fputs(distanceFromAAUInKM, fp);
+                fputs("</td>\n", fp);
 
-            sprintf(travelTimeByWalkInMinutes, "%.1lf", jobsArray[i].travelTimeByWalkInMinutes);
-            fputs(" <td>", fp);
-            fputs(travelTimeByWalkInMinutes, fp);
-            fputs("</td>\n", fp);
+                sprintf(travelTimeByWalkInMinutes, "%.1lf min", jobsArray[i].travelTimeByWalkInMinutes);
+                fputs(" <td>", fp);
+                fputs(travelTimeByWalkInMinutes, fp);
+                fputs("</td>\n", fp);
 
-            sprintf(travelTimeByBikeInMinutes, "%.1lf", jobsArray[i].travelTimeByBikeInMinutes);
-            fputs(" <td>", fp);
-            fputs(travelTimeByBikeInMinutes, fp);
-            fputs("</td>\n", fp);
-            
-            sprintf(travelTimeByPublicInMinutes, "%.1lf", jobsArray[i].travelTimeByPublicInMinutes);
-            fputs(" <td>", fp);
-            fputs(travelTimeByPublicInMinutes, fp);
-            fputs("</td>\n", fp);
+                sprintf(travelTimeByBikeInMinutes, "%.1lf min", jobsArray[i].travelTimeByBikeInMinutes);
+                fputs(" <td>", fp);
+                fputs(travelTimeByBikeInMinutes, fp);
+                fputs("</td>\n", fp);
+                
+                sprintf(travelTimeByPublicInMinutes, "%.1lf min", jobsArray[i].travelTimeByPublicInMinutes);
+                fputs(" <td>", fp);
+                fputs(travelTimeByPublicInMinutes, fp);
+                fputs("</td>\n", fp);
 
-            sprintf(travelTimeByCarInMinutes, "%.1lf", jobsArray[i].travelTimeByCarInMinutes);
-            fputs(" <td>", fp);
-            fputs(travelTimeByCarInMinutes, fp);
-            fputs("</td>\n", fp);
-            
-            sprintf(salary, "%.1lf", jobsArray[i].salary);
-            fputs(" <td>", fp);
-            fputs(salary, fp);
-            fputs("</t>\n", fp);
-        fputs(" </tr>", fp);
+                sprintf(travelTimeByCarInMinutes, "%.1lf min", jobsArray[i].travelTimeByCarInMinutes);
+                fputs(" <td>", fp);
+                fputs(travelTimeByCarInMinutes, fp);
+                fputs("</td>\n", fp);
+                
+                sprintf(salary, "%.1lf dkk", jobsArray[i].salary);
+                fputs(" <td>", fp);
+                fputs(salary, fp);
+                fputs("</t>\n", fp);
+            fputs(" </tr>", fp);
+        }
+        
+        fputs(" </table>", fp);
+        fputs(" </div>", fp);
     }
-    fputs(" <table>", fp);
-
+    fputs(" </div>", fp);
 }

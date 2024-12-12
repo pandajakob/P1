@@ -23,6 +23,3 @@ $(TARGET): $(SRC)
 run: $(TARGET)
 	$(TARGET)
 
-# 'make clean' giver mulighed for at slette bin
-clean:
-	$(RM) bin
