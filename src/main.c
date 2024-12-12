@@ -38,6 +38,7 @@ double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
 void writeHTMLFile(Job jobsArray[], int n);
 
+
 int main(int argc, char *argv[]) {
 
     int isDebugMode = (strcmp(argv[1], "debug") == 0); // starter debug mode, at argv bliver sat til 1;
