@@ -394,62 +394,61 @@ void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode) {
 }
 
 //merging part of the merge sort algorithm
-void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode){
-    int i = 0, j = 0, k = 0;
-
+void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode) {
+    int i = 0, j = 0;
+    
     // Definerer arrays L1 og L2 med korrekt størrelse (halvering af L)
     int lengthL1 = mid - start + 1;
     int lengthL2 = end - mid;
-    double TTR1, TTR2;
 
     Job L1[lengthL1];
     Job L2[lengthL2];
 
     // Fordeler første halvdel af L til L1
-    for(i = 0; i < lengthL1; i++){
-        L1[i] = jobsFilteredArray[start+i];
+    for (i = 0; i < lengthL1; i++) {
+        L1[i] = jobsFilteredArray[start + i];
     }
-    // Fordeler anden halvdel af L til L2
-    for(i = 0; i < lengthL2; i++){
-        L2[i] = jobsFilteredArray[mid+1+i];
+    // Fordeler anden halvdel af L til L2 
+    for (i = 0; i < lengthL2; i++) {
+        L2[i] = jobsFilteredArray[mid + 1 + i];
     }
+
     // Resetter i til 0 efter brugen af 'i' i for loops
     i = 0;
 
+    // Introducerer vægtning
+    double weightCommute = 0.7; // højere prioritet til commute time qua vores research
+    double weightSalary = 0.3;
+
     // Loop så længe at hhv index i og j ikke overskrider længden af elementer i L1 og L2
-    while(i < lengthL1 && j < lengthL2){
-        /* Hvis L1 har det mindste tal (eller L1 og L2 har samme tal) i sammenligningen, 
-        så tilføjes L1's element til L */
-        TTR1 = getTTR(L1[i], commuteMode);
-        TTR2 = getTTR(L2[j], commuteMode);
-        if (TTR1 <= TTR2){
+    while (i < lengthL1 && j < lengthL2) {
+        //få TTR for de tog aktuelle jobs
+        double TTR1 = getTTR(L1[i], commuteMode);
+        double TTR2 = getTTR(L2[j], commuteMode);
+        
+        //udregning af scores baseret på commutevægt, TTR og løn med vægtning
+        double score1 = weightCommute / TTR1 + L1[i].salary * weightSalary;
+        double score2 = weightCommute / TTR2 + L2[j].salary * weightSalary;
+
+        // Hvis L1 har den største score (eller L1 og L2 har samme score) tilføjes L1's element til L 
+        if (score1 >= score2) { // Higher score is better
             jobsFilteredArray[start + i + j] = L1[i];
             i++;
-        }
-        // Ellers tilføjes L2's element til L
-        else{
+        } else {
             jobsFilteredArray[start + i + j] = L2[j];
-                j++;
-            }
+            j++;
         }
-        
-        /* Herunder if/else statement til at tage højde for elementer "til overs" efter 
-        merging. Dvs hvis enten L1 eller L2 er længere, fordi L havde et ulige antal elementer. */
+    }
 
-        // Hvis index fra L1 er nået til enden
-        if(i == mid - start + 1){
-            // Så skal den tilføje resten af L2's elementer til L
-            for(k = j; k <= (end - mid - 1); k++){
-                jobsFilteredArray[start + i + k] = L2[k];
-            }
-        }
-        /* Ellers tilføj resten af L1 (fordi hvis ovenstående ikke er opfyldt må L1
-        alt andet lige have flere elementer tilbage efter gennemførelse af merge) */
-        else {
-            for(k = i; k <= (mid - start); k++){
-                jobsFilteredArray[start + j + k] = L1[k];
-
-        }
+    /* Dette tager højde for elementer "til overs" efter merging. Dvs hvis enten L1 eller L2 er længere, 
+    fordi L havde et ulige antal elementer. så alle resterende elementer tilføjes til sidst*/
+    while (i < lengthL1) {
+        jobsFilteredArray[start + i + j] = L1[i];
+        i++;
+    }
+    while (j < lengthL2) {
+        jobsFilteredArray[start + i + j] = L2[j];
+        j++;
     }
 }
 
