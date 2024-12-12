@@ -227,7 +227,7 @@ Job *readJobs(int *n) {
         exit(EXIT_FAILURE);
     }
     
-    fp = fopen("C:/Users/nichz/Desktop/P1/P1/src/survey.txt", "r"); 
+    fp = fopen("./src/survey.txt", "r"); 
 
     if (fp == NULL) {
         printf("Error opening file. Kontroller, at filen 'survey.txt' findes i 'src'-mappen.\n");
