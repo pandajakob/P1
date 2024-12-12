@@ -21,5 +21,5 @@ $(TARGET): $(SRC)
 
 # 'make run' kører programmet
 run: $(TARGET)
-	$(TARGET)
+	$(TARGET) 0
 
