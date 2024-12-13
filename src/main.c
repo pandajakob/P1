@@ -5,6 +5,11 @@
 #include <stdbool.h>
 #include <math.h>
 
+/*kør programmet windows
+    1: mkdir -p bin
+    2: gcc -pedantic -Wall src/main.c -o ./bin/a.exe
+    3: ./bin/a.exe
+*/
 typedef struct Job {
     int Id;
     char title[100];
@@ -23,9 +28,10 @@ typedef struct Job {
 typedef enum CommuteMode {WALK, BIKE, PUBLIC_TRANSPORT, CAR} CommuteMode;
 typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteModeCategory;
 
-void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode);
+void getParametersFromUser(int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode);
 Job *readJobs(int *n);
-Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek);
+Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek, char jobTag[]);
+int checkForJobTag(char jobTitle[], char jobTag[]);
 void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode);
 void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode);
 double getTTR(Job job, CommuteMode commuteMode);
@@ -36,16 +42,21 @@ void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]);
 int main(int argc, char *argv[]) {
 
     int isDebugMode = (strcmp(argv[1], "debug") == 0); // starter debug mode, at argv bliver sat til 1;
-    int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
-
+    int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, timeFromHomeToAAUInMinutes = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
+    char jobTag[100];
 
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE;
 
-    getParametersFromUser(&minimumSalary, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory, isDebugMode);
+    getParametersFromUser(&minimumSalary, &timeFromHomeToAAUInMinutes, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory, isDebugMode);
+    /*printf("Jobtags (q for ingen): ");
+    scanf("%s", jobTag);
+    
+    printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
+            inputMinimumSalary, inputTimeFromHomeToAAUInMinutes, inputTimeOnStudiesInHours, inputCommuteModeCategory);*/
     
     //Creating arrays for jobs and filtered jobs
     Job *jobsArray = readJobs(&numberOfJobs);
-    Job *jobsFilteredArray = filterJobs(&numberOfJobs, &numberOfJobsFiltered, jobsArray, minimumSalary, maximumWorkloadPerWeek, studyHoursPerWeek);
+    Job *jobsFilteredArray = filterJobs(&numberOfJobs, &numberOfJobsFiltered, jobsArray, minimumSalary, maximumWorkloadPerWeek, studyHoursPerWeek, jobTag);
     free(jobsArray);
 
     //based on preferred commute mode category; jobs are sorted and printed to user
@@ -105,7 +116,7 @@ int main(int argc, char *argv[]) {
 }
 
 //interaktion med user for at få parametre
-void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode){   
+void getParametersFromUser(int* minimumSalary, int* timeFromHomeToAAUInMinutes, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode){   
     double tempInput;
 
     // Prompt for minimum salary
@@ -134,6 +145,31 @@ void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int*
             continue; 
         }
         *minimumSalary = (int)tempInput;
+        break;
+    }
+
+    // Prompt for time from home to AAU
+    printf("Indtast transporttid til AAU (1-90 min): ");
+    while(true){
+        // Check om input er et gyldigt tal
+        if (scanf("%lf", &tempInput) != 1) {
+            printf("Ugyldigt input! Vælg et tal: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        // Check om input er et heltal
+        if (floor(tempInput) != tempInput) {
+            printf("Ugyldigt input! Vælg et helt tal: ");
+            while (getchar() != '\n'); 
+            continue;
+        }
+        // Check om input er inden for det gyldige interval
+        if (tempInput < 1 || tempInput > 90) {
+            printf("Ugyldigt input! Vælg et tal mellem 1 og 90: ");
+            while (getchar() != '\n'); 
+            continue; 
+        }
+        *timeFromHomeToAAUInMinutes = (int)tempInput;
         break;
     }
 
@@ -291,7 +327,7 @@ Job *readJobs(int *n) {
 }
 
 //filters jobs from jobsArray and puts them in jobsFilteredArray (filtering based on user input parameters)
-Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek) {
+Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek, char jobTag[]) {
     Job *jobsFilteredArray = malloc(*n * sizeof(Job));
 
     if (jobsFilteredArray == NULL) {
@@ -309,10 +345,39 @@ Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWo
         if (currentJobMonthlySalary >= minimumSalary && totalWorkload <= maximumWorkloadPerWeek) {
             jobsFilteredArray[*k] = jobsArray[i]; 
             (*k)++;
+        //&& checkForJobTag(jobsArray[i].title, jobTag)
         }
     }
 
     return jobsFilteredArray;
+}
+
+
+int checkForJobTag(char jobTitle[], char jobTag[]) {
+    if (strstr(jobTag, "q") != NULL) {
+        return 1;
+    }
+
+    // copies the strings, so we don't change the original
+    char jobTitleCopy[99];
+    char jobTagCopy[99];
+    strcpy(jobTitleCopy, jobTitle);
+    strcpy(jobTagCopy, jobTag);
+
+    //lowercases both strings in order to compare them equally
+    int i;
+    for (i = 0; i < 100; i++) {
+        jobTitleCopy[i] = toupper(jobTitle[i]);
+    }
+    for (i = 0; i < 100; i++) {
+        jobTagCopy[i] = toupper(jobTag[i]);
+    }
+
+    // checks if the tag is in the job title
+    if (strstr(jobTitleCopy, jobTagCopy) != NULL) {
+        return 1;
+    }
+    return 0;
 }
 
 //sorts jobsFilteredArray based on TTR in a given commute mode
@@ -386,7 +451,7 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
         j++;
     }
 }
-
+  
 //calculates the TTR for the student based on the given job
 double getTTR(Job job, CommuteMode commuteMode) {
     double TTR = 0;
