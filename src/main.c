@@ -5,11 +5,6 @@
 #include <stdbool.h>
 #include <math.h>
 
-/*kør programmet windows
-    1: mkdir -p bin
-    2: gcc -pedantic -Wall src/main.c -o ./bin/a.exe
-    3: ./bin/a.exe
-*/
 typedef struct Job {
     int Id;
     char title[100];
@@ -47,11 +42,6 @@ int main(int argc, char *argv[]) {
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE;
 
     getParametersFromUser(&minimumSalary, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory, isDebugMode);
-    /*printf("Jobtags (q for ingen): ");
-    scanf("%s", jobTag);
-    
-    printf("Minimum Salary: %d\nTime to AAU: %d\nAvg. Time on studies: %d\nChoosen comuute mode: %d\n", 
-            inputMinimumSalary, inputTimeFromHomeToAAUInMinutes, inputTimeOnStudiesInHours, inputCommuteModeCategory);*/
     
     //Creating arrays for jobs and filtered jobs
     Job *jobsArray = readJobs(&numberOfJobs);
@@ -323,34 +313,6 @@ Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWo
     }
 
     return jobsFilteredArray;
-}
-
-
-int checkForJobTag(char jobTitle[], char jobTag[]) {
-    if (strstr(jobTag, "q") != NULL) {
-        return 1;
-    }
-
-    // copies the strings, so we don't change the original
-    char jobTitleCopy[99];
-    char jobTagCopy[99];
-    strcpy(jobTitleCopy, jobTitle);
-    strcpy(jobTagCopy, jobTag);
-
-    //lowercases both strings in order to compare them equally
-    int i;
-    for (i = 0; i < 100; i++) {
-        jobTitleCopy[i] = toupper(jobTitle[i]);
-    }
-    for (i = 0; i < 100; i++) {
-        jobTagCopy[i] = toupper(jobTag[i]);
-    }
-
-    // checks if the tag is in the job title
-    if (strstr(jobTitleCopy, jobTagCopy) != NULL) {
-        return 1;
-    }
-    return 0;
 }
 
 //sorts jobsFilteredArray based on TTR in a given commute mode
