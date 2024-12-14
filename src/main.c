@@ -29,7 +29,9 @@ void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode com
 void mergeSort(Job jobsArray[], int start, int end, CommuteMode commuteMode);
 double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
-void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]);
+void writeHTMLFile(Job jobsFilteredArray[], int numberOfJobsFiltered, CommuteModeCategory commuteModeCategory);
+void witeHTMLTables(Job jobsArray[], int n, char commuteMode[100]);
+
 
 
 int main(int argc, char *argv[]) {
@@ -48,55 +50,7 @@ int main(int argc, char *argv[]) {
     free(jobsArray);
 
     //based on preferred commute mode category; jobs are sorted and printed to user
-    FILE *fp;
-
-    fp = fopen("./src/output.html", "w"); //opens the file in add write mode;
-    if (fp == NULL) {
-        printf("Error opening file");
-    }
-    fputs("<link rel='stylesheet' href='style.css'>\n", fp); //html code connects to the file styles.css
-   
-    if (commuteModeCategory == ACTIVE) {
-        fputs(" <div class=\"tableContainer\">", fp);
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
-        printJobs(jobsFilteredArray, numberOfJobsFiltered);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Gå");
-
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
-
-        fputs(" </div>", fp);
-    }
-    else if (commuteModeCategory == GREEN) {
-        fputs(" <div class=\"tableContainer\">", fp);
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Gå");
-
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
-
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
-        
-        fputs(" </div>", fp);
-    }
-    else {
-        fputs(" <div class=\"tableContainer\">", fp);
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Gå");
-
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
-        
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
-
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, CAR);
-        writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, "Bil");
-
-        fputs(" </div>", fp);
-    }
-    fclose(fp);
+    writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, commuteModeCategory);
 
     free(jobsFilteredArray);
 
@@ -107,12 +61,15 @@ int main(int argc, char *argv[]) {
 void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode){   
     double tempInput;
 
-    // Prompt for minimum salary
-    printf("Indtast dit minimumsbeløb for at betale regninger. Skriv 0, hvis du ikke har et beløb: ");
     if (isDebugMode) {
-        // indsæt test-værdier
+        *minimumSalary = 5000;
+        *studyHoursPerWeek = 1;
+        *maximumWorkloadPerWeek = 15;
+        *commuteModeCategory = NO_PREFERENCE;
         return;
     }
+    // Prompt for minimum salary
+    printf("Indtast dit minimumsbeløb for at betale regninger. Skriv 0, hvis du ikke har et beløb: ");
     while(true){
         // Check om input er et gyldigt tal
         if (scanf("%lf", &tempInput) != 1) {
@@ -445,9 +402,54 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
     }
 }
 
+void writeHTMLFile(Job jobsFilteredArray[], int numberOfJobsFiltered, CommuteModeCategory commuteModeCategory){
+    FILE *fp;
 
-void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]) {
+    fp = fopen("./src/output.html", "w"); //opens the file in add write mode;
+    if (fp == NULL) {
+        printf("Error opening file");
+    }
+    fputs("<link rel='stylesheet' href='style.css'>\n", fp); //html code connects to the file styles.css
+    fputs(" <div class=\"tableContainer\">", fp);
+
+    if (commuteModeCategory == ACTIVE) {
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
+        printJobs(jobsFilteredArray, numberOfJobsFiltered);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Gå");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
+    }
+    else if (commuteModeCategory == GREEN) {
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Gå");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
+    }
+    else {
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Gå");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
+        
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
+
+        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, CAR);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Bil");
+    }
+    fputs(" </div>", fp);
+    fclose(fp);
+}
+
+void witeHTMLTables(Job jobsArray[], int n, char commuteMode[100]) {
     int count;
+
 
     if (n > 10)
         count = 10;
@@ -516,7 +518,6 @@ void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]) {
         fputs(" </th>\n", fp);
 
         fputs(" </tr>", fp);
-        
         for (int i = 0; i < count; i++) {
             fputs(" <tr>", fp);
                 fputs(" <td>", fp);
