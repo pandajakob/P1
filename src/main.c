@@ -473,10 +473,10 @@ void writeHTMLFile(Job jobsArray[], int n, char commuteMode[100]) {
     char comumuteMode10[100];
 
     fputs(" <div class=\"tableWrapper\">", fp);
-    fputs(" <p>", fp);
+    fputs(" <h3>", fp);
     sprintf(comumuteMode10, "Top 10 for %s", commuteMode);
     fputs(comumuteMode10, fp);
-    fputs(" </p>", fp);
+    fputs(" </h3>", fp);
     fputs(" <table>", fp);
     fputs(" <tr>", fp);
         fputs(" <th>", fp);
