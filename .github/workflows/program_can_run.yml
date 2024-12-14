@@ -1,5 +1,4 @@
-name: Program can run
-
+name: Program can pass all tests
 # a test that the program can compile, run and terminate
 
 on:
