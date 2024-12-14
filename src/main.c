@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
+#include <assert.h>
 
 typedef struct Job {
     int Id;
@@ -22,7 +23,7 @@ typedef struct Job {
 typedef enum CommuteMode {WALK, BIKE, PUBLIC_TRANSPORT, CAR} CommuteMode;
 typedef enum CommuteModeCategory {ACTIVE=1, GREEN=2, NO_PREFERENCE=3} CommuteModeCategory;
 
-void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode);
+void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory);
 Job *readJobs(int *n);
 Job *filterJobs(int *n, int *k, Job *jobsArray, int minimumSalary, int maximumWorkloadPerWeek, int studyHoursPerWeek);
 void merge(Job jobsFilteredArray[], int start, int end, int mid, CommuteMode commuteMode);
@@ -31,26 +32,34 @@ double getTTR(Job job, CommuteMode commuteMode);
 void printJobs(Job *jobsArray, int numberOfJobs);
 void writeHTMLFile(Job jobsFilteredArray[], int numberOfJobsFiltered, CommuteModeCategory commuteModeCategory);
 void witeHTMLTables(Job jobsArray[], int n, char commuteMode[100]);
-
-
+void runTestOfResults(Job jobsArray[], int n, CommuteMode commuteMode);
+int debugTest = 0;
 
 int main(int argc, char *argv[]) {
 
-    int isDebugMode = (strcmp(argv[1], "debug") == 0); // starter debug mode, at argv bliver sat til 1;
+    if (strcasecmp(argv[1], "debugTest1") == 0)
+        debugTest = 1;
+    
+
     int numberOfJobs = 0, numberOfJobsFiltered = 0, minimumSalary = 0, maximumWorkloadPerWeek = 0, studyHoursPerWeek = 0;
 
 
     CommuteModeCategory commuteModeCategory = NO_PREFERENCE;
 
-    getParametersFromUser(&minimumSalary, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory, isDebugMode);
+    getParametersFromUser(&minimumSalary, &maximumWorkloadPerWeek, &studyHoursPerWeek, &commuteModeCategory);
     
     //Creating arrays for jobs and filtered jobs
     Job *jobsArray = readJobs(&numberOfJobs);
     Job *jobsFilteredArray = filterJobs(&numberOfJobs, &numberOfJobsFiltered, jobsArray, minimumSalary, maximumWorkloadPerWeek, studyHoursPerWeek);
     free(jobsArray);
+    if(numberOfJobsFiltered == 0) {
+        printf("Ingen jobs matcher de givne kriterier!");
+        exit(EXIT_SUCCESS);
+    }
 
     //based on preferred commute mode category; jobs are sorted and printed to user
     writeHTMLFile(jobsFilteredArray, numberOfJobsFiltered, commuteModeCategory);
+
 
     free(jobsFilteredArray);
 
@@ -58,13 +67,13 @@ int main(int argc, char *argv[]) {
 }
 
 //interaktion med user for at få parametre
-void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory, int isDebugMode){   
+void getParametersFromUser(int* minimumSalary, int* maximumWorkloadPerWeek, int* studyHoursPerWeek, CommuteModeCategory* commuteModeCategory){   
     double tempInput;
 
-    if (isDebugMode) {
+    if (debugTest == 1) {
         *minimumSalary = 5000;
-        *studyHoursPerWeek = 1;
-        *maximumWorkloadPerWeek = 15;
+        *studyHoursPerWeek = 24;
+        *maximumWorkloadPerWeek = 40;
         *commuteModeCategory = NO_PREFERENCE;
         return;
     }
@@ -189,11 +198,13 @@ Job *readJobs(int *n) {
         printf("Failed to allocate memory");
         exit(EXIT_FAILURE);
     }
-    
-    fp = fopen("./src/survey.txt", "r"); 
-
+    if (debugTest != 0) {
+        fp = fopen("./src/jobsForTest.csv", "r"); 
+    } else {
+        fp = fopen("./src/jobs.csv", "r"); 
+    }
     if (fp == NULL) {
-        printf("Error opening file. Kontroller, at filen 'survey.txt' findes i 'src'-mappen.\n");
+        printf("Error opening file. Kontroller, at filen 'jobs.csv' findes i 'src'-mappen.\n");
         exit(EXIT_FAILURE);
     }
     
@@ -402,50 +413,45 @@ void printJobs(Job *jobsArray, int numberOfJobs) {
     }
 }
 
+
 void writeHTMLFile(Job jobsFilteredArray[], int numberOfJobsFiltered, CommuteModeCategory commuteModeCategory){
     FILE *fp;
 
-    fp = fopen("./src/output.html", "w"); //opens the file in add write mode;
+    fp = fopen("./src/output.html", "w"); //opens the file in write mode;
     if (fp == NULL) {
         printf("Error opening file");
     }
     fputs("<link rel='stylesheet' href='style.css'>\n", fp); //html code connects to the file styles.css
     fputs(" <div class=\"tableContainer\">", fp);
 
-    if (commuteModeCategory == ACTIVE) {
+    if (commuteModeCategory == ACTIVE || commuteModeCategory == GREEN || commuteModeCategory == NO_PREFERENCE) {
         mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
         printJobs(jobsFilteredArray, numberOfJobsFiltered);
         witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Gå");
+        runTestOfResults(jobsFilteredArray, numberOfJobsFiltered, WALK);
 
         mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
+        printJobs(jobsFilteredArray, numberOfJobsFiltered);
         witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
+        runTestOfResults(jobsFilteredArray, numberOfJobsFiltered, BIKE);
+
     }
-    else if (commuteModeCategory == GREEN) {
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
-        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Gå");
-
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
-        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
-
+    if (commuteModeCategory == GREEN || commuteModeCategory == NO_PREFERENCE) {
         mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
+        printJobs(jobsFilteredArray, numberOfJobsFiltered);
         witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
+        runTestOfResults(jobsFilteredArray, numberOfJobsFiltered, PUBLIC_TRANSPORT);
     }
-    else {
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, WALK);
-        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Gå");
-
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, BIKE);
-        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Cykle");
-        
-        mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, PUBLIC_TRANSPORT);
-        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Offentlig-transport");
-
+    if (commuteModeCategory == NO_PREFERENCE) {
         mergeSort(jobsFilteredArray, 0, numberOfJobsFiltered - 1, CAR);
-        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Bil");
+        printJobs(jobsFilteredArray, numberOfJobsFiltered);
+        witeHTMLTables(jobsFilteredArray, numberOfJobsFiltered, "Bil");   
+        runTestOfResults(jobsFilteredArray, numberOfJobsFiltered, CAR);
     }
     fputs(" </div>", fp);
     fclose(fp);
 }
+
 
 void witeHTMLTables(Job jobsArray[], int n, char commuteMode[100]) {
     int count;
@@ -567,4 +573,21 @@ void witeHTMLTables(Job jobsArray[], int n, char commuteMode[100]) {
         }
         fputs(" </table>", fp);
         fputs(" </div>", fp);
+}
+
+// if debug mode is on, it checks if the jobsForTest.csv has been sorted correctly
+void runTestOfResults(Job jobsArray[], int n, CommuteMode commuteMode) {
+    if (debugTest == 1) {
+        assert(n == 2);
+        if (commuteMode == WALK || commuteMode == BIKE) {
+            assert(strcmp(jobsArray[0].title, "Studentermedhjælper i IT") == 0);
+            assert(strcmp(jobsArray[1].title, "Barista") == 0);
+        } else if (commuteMode == CAR || commuteMode == PUBLIC_TRANSPORT) {
+            assert(strcmp(jobsArray[0].title, "Barista") == 0);
+            assert(strcmp(jobsArray[1].title, "Studentermedhjælper i IT") == 0);
+        }
+        printf("Test completed successfully!\n");
+    } else {
+        return;
+    }
 }
