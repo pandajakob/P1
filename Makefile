@@ -19,3 +19,6 @@ $(TARGET): $(SRC)
 run: $(TARGET)
 	$(TARGET) 0
 
+runTest: $(TARGET)
+	$(TARGET) debugTest1
+
